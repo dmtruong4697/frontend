@@ -1,13 +1,18 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Nunito } from 'next/font/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const nunito = Nunito({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-nunito',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'Matcha - Chat with strangers',
-  description: 'Connect with strangers instantly',
+  title: 'Matcha — Chat with strangers',
+  description: 'Meet someone new. Have a real conversation. Stay safe.',
 };
 
 export default function RootLayout({
@@ -18,8 +23,11 @@ export default function RootLayout({
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'client-id-not-set';
 
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} bg-black text-white antialiased min-h-screen flex flex-col`}>
+    <html lang="en" className={nunito.variable}>
+      <body
+        className="antialiased min-h-screen flex flex-col"
+        style={{ background: 'var(--background)', color: 'var(--foreground)', fontFamily: "'Nunito', sans-serif" }}
+      >
         <GoogleOAuthProvider clientId={googleClientId}>
           {children}
         </GoogleOAuthProvider>

@@ -13,25 +13,40 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', isLoading, children, ...props }, ref) => {
+    const base =
+      'inline-flex items-center justify-center gap-2 font-bold rounded-full px-5 py-2.5 transition-all duration-200 active:scale-95 select-none cursor-pointer disabled:cursor-not-allowed border-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2';
+
+    const variants: Record<string, string> = {
+      primary:
+        'bg-sage-500 text-white hover:bg-sage-600 shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-md focus-visible:ring-sage-400',
+      secondary:
+        'bg-peach-100 text-warm-900 hover:bg-peach-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 disabled:opacity-50 disabled:translate-y-0 focus-visible:ring-peach-400',
+      danger:
+        'bg-blush-100 text-blush-600 hover:bg-blush-500 hover:text-white shadow-sm hover:shadow-md hover:-translate-y-0.5 disabled:opacity-50 focus-visible:ring-blush-500',
+      ghost:
+        'bg-transparent text-warm-700 hover:bg-sage-50 disabled:opacity-50 focus-visible:ring-sage-400',
+    };
+
     return (
       <button
         ref={ref}
         disabled={isLoading || props.disabled}
-        className={cn(
-          'px-4 py-2 rounded-2xl font-semibold transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 border-2 border-transparent',
-          {
-            'bg-matcha-500 text-white hover:bg-matcha-600 disabled:bg-matcha-500/50 shadow-sm': variant === 'primary',
-            'bg-matcha-100 text-forest-700 hover:bg-matcha-300 disabled:bg-matcha-100/50': variant === 'secondary',
-            'bg-rose-100 text-rose-600 border-rose-200 hover:bg-rose-200': variant === 'danger',
-            'bg-transparent hover:bg-matcha-100/50 text-forest-700': variant === 'ghost',
-            'opacity-70 cursor-not-allowed': isLoading || props.disabled,
-          },
-          className
-        )}
+        className={cn(base, variants[variant] ?? variants.primary, className)}
         {...props}
       >
         {isLoading && (
-          <div className="w-4 h-4 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+          <span className="flex items-center gap-1">
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className="w-1.5 h-1.5 rounded-full bg-current"
+                style={{
+                  animation: 'bounceDot 1.1s ease-in-out infinite',
+                  animationDelay: `${i * 0.16}s`,
+                }}
+              />
+            ))}
+          </span>
         )}
         {children}
       </button>

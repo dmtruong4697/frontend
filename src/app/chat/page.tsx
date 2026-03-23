@@ -7,7 +7,7 @@ import { useMatchStore } from '@/stores/useMatchStore';
 import { useChatStore } from '@/stores/useChatStore';
 import { useWebSocket } from '@/hooks/useWebSocket';
 import { Button } from '@/components/ui/Button';
-import { LogOut, Send, Wifi, WifiOff } from 'lucide-react';
+import { LogOut, Send } from 'lucide-react';
 import { cn } from '@/components/ui/Button';
 
 export default function ChatPage() {
@@ -27,30 +27,26 @@ export default function ChatPage() {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
+  useEffect(() => { setIsHydrated(true); }, []);
 
   useEffect(() => {
     if (!isHydrated) return;
-    
-    if (!token) {
-      router.replace('/login');
-    }
-    if (!roomID) {
-      router.replace('/home');
-    }
-    
-    return () => {
-      // Disconnect WS when leaving chat page
-      disconnect();
-    };
+    if (!token) { router.replace('/login'); }
+    if (!roomID) { router.replace('/home'); }
+    return () => { disconnect(); };
   }, [isHydrated, token, roomID, router, disconnect]);
 
   useEffect(() => {
-    // Scroll to bottom on new message
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, strangerTyping]);
+
+  const prevRoomID = useRef<string | null>(null);
+  useEffect(() => {
+    if (roomID && prevRoomID.current && roomID !== prevRoomID.current) {
+      clearChat();
+    }
+    prevRoomID.current = roomID;
+  }, [roomID, clearChat]);
 
   const handleSend = () => {
     if (!input.trim() || !isConnected || strangerDisconnected) return;
@@ -62,69 +58,89 @@ export default function ChatPage() {
     if (e.key === 'Enter') {
       handleSend();
     } else {
-      // Send typing event indicator (throttling could be added here)
       sendMessage('', 'typing');
     }
   };
 
-  const prevRoomID = useRef<string | null>(null);
-  useEffect(() => {
-    if (roomID && prevRoomID.current && roomID !== prevRoomID.current) {
-      clearChat();
-    }
-    prevRoomID.current = roomID;
-  }, [roomID, clearChat]);
-
   const handleLeave = () => {
-    sendMessage('', 'leave'); // Notify server/partner explicitly
+    sendMessage('', 'leave');
     setTimeout(() => {
       disconnect();
       resetMatch();
       clearChat();
       router.replace('/home');
-    }, 100); // Small delay to ensure message is sent
+    }, 100);
   };
 
   if (!roomID) return null;
 
+  const strangerLabel = `Stranger #${strangerID?.substring(0, 4) || '??'}`;
+
   return (
-    <div className="flex-1 flex flex-col h-screen bg-cream-50 font-medium">
-      {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 bg-white/70 backdrop-blur-md border-b border-matcha-100 shrink-0 shadow-sm">
+    <div
+      className="flex flex-col"
+      style={{ height: '100dvh', background: 'var(--background)' }}
+    >
+      {/* ── Header ── */}
+      <header
+        className="flex items-center justify-between px-4 py-3 shrink-0"
+        style={{
+          background: 'rgba(255,255,255,0.88)',
+          backdropFilter: 'blur(16px)',
+          borderBottom: '1.5px solid #EDE8E1',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+        }}
+      >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-matcha-500 rounded-2xl flex items-center justify-center shadow-inner">
-            <span className="text-xl">🍵</span>
-          </div>
-          <div className="flex flex-col">
-            <h2 className="text-forest-900 font-bold text-sm">Stranger #{strangerID?.substring(0, 4) || '??'}</h2>
-            <div className="flex items-center gap-1.5">
-              <span className={cn(
-                "w-2 h-2 rounded-full",
-                isConnected ? "bg-matcha-500 animate-pulse" : "bg-rose-500"
-              )} />
-              <span className={cn(
-                "text-[10px] font-bold uppercase tracking-wider",
-                isConnected ? "text-matcha-600" : "text-rose-500"
-              )}>
-                {isConnected ? 'Online' : 'Offline'}
-              </span>
+          {/* Avatar */}
+          <div className="relative">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0"
+              style={{ background: 'linear-gradient(135deg,#FDD4B3,#F4A261)', boxShadow: '0 2px 8px rgba(244,162,97,0.3)' }}
+            >
+              👤
             </div>
+            {/* Online dot */}
+            <span
+              className="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white"
+              style={{
+                background: isConnected ? '#6BBFA0' : '#F08080',
+                animation: isConnected ? 'pulseDot 2s ease-in-out infinite' : 'none',
+              }}
+            />
+          </div>
+
+          <div>
+            <p className="text-sm font-black" style={{ color: '#2E2E2E' }}>{strangerLabel}</p>
+            <p
+              className="text-[11px] font-bold uppercase tracking-wider"
+              style={{ color: isConnected ? '#5A9E87' : '#D96060' }}
+            >
+              {isConnected ? '● Online' : '○ Offline'}
+            </p>
           </div>
         </div>
 
-        <Button variant="danger" onClick={handleLeave} className="text-xs py-1.5 px-4 rounded-xl border-none font-bold">
-          <LogOut className="w-4 h-4" />
-          <span>Exit</span>
+        <Button variant="danger" onClick={handleLeave} className="text-xs px-4 py-2 gap-1.5">
+          <LogOut className="w-3.5 h-3.5" />
+          Exit
         </Button>
       </header>
 
-      {/* Messages Area */}
-      <main className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+      {/* ── Messages ── */}
+      <main
+        className="flex-1 overflow-y-auto flex flex-col gap-3 px-4 py-4"
+        style={{ background: 'var(--background)' }}
+      >
         {messages.map((msg, idx) => {
+          // System / error messages
           if (msg.type === 'system' || msg.type === 'error') {
             return (
-              <div key={idx} className="flex justify-center my-2">
-                <span className="text-[10px] font-bold bg-matcha-100 text-matcha-600 py-1.5 px-4 rounded-full border border-matcha-200 uppercase tracking-widest">
+              <div key={idx} className="flex justify-center my-1 animate-fade-in">
+                <span
+                  className="text-[11px] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest"
+                  style={{ background: '#EDE8E1', color: '#8A8A8A' }}
+                >
                   {msg.content}
                 </span>
               </div>
@@ -135,67 +151,141 @@ export default function ChatPage() {
             <div
               key={msg.id || idx}
               className={cn(
-                "flex max-w-[85%] flex-col",
-                msg.isMe ? "self-end items-end" : "self-start items-start"
+                'flex flex-col max-w-[78%] animate-fade-in-up',
+                msg.isMe ? 'self-end items-end' : 'self-start items-start'
               )}
             >
               <div
-                className={cn(
-                  "px-4 py-3 rounded-2xl break-words whitespace-pre-wrap shadow-sm text-[15px] leading-relaxed",
+                className="px-4 py-3 break-words whitespace-pre-wrap text-sm leading-relaxed font-semibold"
+                style={
                   msg.isMe
-                    ? "bg-matcha-500 text-white rounded-tr-none"
-                    : "bg-white text-forest-900 rounded-tl-none border-2 border-matcha-100"
-                )}
+                    ? {
+                        background: 'linear-gradient(135deg,#8DD1B9,#7CB9A0)',
+                        color: '#fff',
+                        borderRadius: '1.25rem 1.25rem 0.375rem 1.25rem',
+                        boxShadow: '0 2px 12px rgba(124,185,160,0.3)',
+                      }
+                    : {
+                        background: '#fff',
+                        color: '#2E2E2E',
+                        borderRadius: '1.25rem 1.25rem 1.25rem 0.375rem',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                        border: '1.5px solid #EDE8E1',
+                      }
+                }
               >
                 {msg.content}
               </div>
-              <span className="text-[10px] text-matcha-400 font-bold mt-1.5 px-1">
+              <span
+                className="text-[10px] font-bold mt-1 px-1"
+                style={{ color: '#B0A89E' }}
+              >
                 {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
           );
         })}
 
+        {/* Typing indicator */}
         {strangerTyping && !strangerDisconnected && (
-          <div className="flex self-start max-w-[80%] px-4 py-4 bg-white border-2 border-matcha-100 rounded-2xl rounded-tl-none text-matcha-500">
-            <div className="flex gap-1.5 items-center h-2">
-              <span className="w-2 h-2 bg-matcha-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-              <span className="w-2 h-2 bg-matcha-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-              <span className="w-2 h-2 bg-matcha-400 rounded-full animate-bounce"></span>
+          <div className="self-start animate-fade-in">
+            <div
+              className="flex items-center gap-1.5 px-4 py-3"
+              style={{
+                background: '#fff',
+                borderRadius: '1.25rem 1.25rem 1.25rem 0.375rem',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                border: '1.5px solid #EDE8E1',
+              }}
+            >
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className="w-2 h-2 rounded-full"
+                  style={{
+                    background: '#8DD1B9',
+                    animation: 'bounceDot 1.2s ease-in-out infinite',
+                    animationDelay: `${i * 0.18}s`,
+                  }}
+                />
+              ))}
             </div>
           </div>
         )}
-        
+
+        {/* Disconnected banner */}
         {strangerDisconnected && (
-          <div className="flex justify-center my-4">
-            <div className="bg-rose-50 text-rose-500 border-2 border-rose-100 py-3 px-6 rounded-3xl text-xs font-bold shadow-sm text-center animate-in zoom-in-95 duration-300">
-              Stranger has left the tea party. 🍵<br/>
-              <span className="opacity-70">Click Exit to find a new friend!</span>
+          <div className="flex justify-center my-3 animate-slide-in-bottom">
+            <div
+              className="px-6 py-3 text-xs font-bold text-center"
+              style={{
+                background: '#FDE8E8',
+                color: '#D96060',
+                borderRadius: '1.5rem',
+                border: '1.5px solid #F5C0C0',
+                boxShadow: '0 2px 8px rgba(240,128,128,0.15)',
+              }}
+            >
+              Stranger has left the chat 👋
+              <br />
+              <span style={{ opacity: 0.7 }}>Click Exit to find someone new!</span>
             </div>
           </div>
         )}
+
         <div ref={messagesEndRef} />
       </main>
 
-      {/* Input Area */}
-      <div className="px-4 py-4 bg-white/70 backdrop-blur-md border-t border-matcha-100 shrink-0">
-        <div className="flex items-center gap-3 max-w-4xl mx-auto">
+      {/* ── Input Bar ── */}
+      <div
+        className="shrink-0 px-4 py-3"
+        style={{
+          background: 'rgba(255,255,255,0.92)',
+          backdropFilter: 'blur(16px)',
+          borderTop: '1.5px solid #EDE8E1',
+          boxShadow: '0 -2px 12px rgba(0,0,0,0.04)',
+        }}
+      >
+        <div className="flex items-center gap-3 max-w-3xl mx-auto">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={!isConnected || strangerDisconnected}
-            placeholder={strangerDisconnected ? "Disconnected..." : "Send a message..."}
-            className="flex-1 bg-white border-2 border-matcha-100 rounded-2xl px-5 py-3 text-forest-900 placeholder:text-matcha-300 outline-none focus:border-matcha-500 transition-all shadow-sm font-medium"
+            placeholder={
+              strangerDisconnected
+                ? 'Chat ended…'
+                : !isConnected
+                ? 'Connecting…'
+                : 'Type a message…'
+            }
+            className="flex-1 px-5 py-3 text-sm font-semibold outline-none transition-all duration-200"
+            style={{
+              background: '#F7F4F0',
+              border: '2px solid #EDE8E1',
+              borderRadius: '999px',
+              color: '#2E2E2E',
+            }}
+            onFocus={(e) => { e.target.style.borderColor = '#7CB9A0'; e.target.style.boxShadow = '0 0 0 3px rgba(124,185,160,0.15)'; }}
+            onBlur={(e) => { e.target.style.borderColor = '#EDE8E1'; e.target.style.boxShadow = 'none'; }}
           />
-          <Button
+          <button
             onClick={handleSend}
             disabled={!input.trim() || !isConnected || strangerDisconnected}
-            className="rounded-2xl w-14 h-12 !p-0 shrink-0 shadow-md shadow-matcha-200"
+            className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 active:scale-90"
+            style={{
+              background: !input.trim() || !isConnected || strangerDisconnected
+                ? '#EDE8E1'
+                : 'linear-gradient(135deg,#8DD1B9,#7CB9A0)',
+              color: !input.trim() || !isConnected || strangerDisconnected ? '#B0A89E' : '#fff',
+              boxShadow: !input.trim() || !isConnected || strangerDisconnected
+                ? 'none'
+                : '0 4px 16px rgba(124,185,160,0.35)',
+            }}
           >
-            <Send className="w-5 h-5 ml-0.5" />
-          </Button>
+            <Send className="w-4 h-4 ml-0.5" />
+          </button>
         </div>
       </div>
     </div>

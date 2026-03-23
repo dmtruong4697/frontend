@@ -1,26 +1,243 @@
 @import "tailwindcss/index.css";
 
+/* @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap'); */
+
+/* ─── Design Tokens ─── */
 @theme {
-  --color-matcha-600: #8DA05E;
-  --color-matcha-500: #A4B465;
-  --color-matcha-400: #B7C686;
-  --color-matcha-300: #D9E5A3;
-  --color-matcha-100: #F0F4E1;
-  --color-cream-50: #FDFCF5;
-  --color-cream-100: #F9F7E8;
-  --color-forest-900: #2D391F;
-  --color-forest-700: #3A4D1F;
+  /* Sage-teal palette */
+  --color-sage-50: #F0F8F5;
+  --color-sage-100: #D9F0E8;
+  --color-sage-200: #B3E2D0;
+  --color-sage-300: #8DD1B9;
+  --color-sage-400: #6BBFA0;
+  --color-sage-500: #7CB9A0;
+  --color-sage-600: #5A9E87;
+  --color-sage-700: #3D7D69;
+
+  /* Peach accent */
+  --color-peach-100: #FEE8D8;
+  --color-peach-200: #FDD4B3;
+  --color-peach-400: #F4A261;
+  --color-peach-500: #E8864A;
+
+  /* Neutral warm */
+  --color-warm-50: #F7F4F0;
+  --color-warm-100: #EDE8E1;
+  --color-warm-200: #DDD5CB;
+  --color-warm-700: #6B6058;
+  --color-warm-900: #2E2E2E;
+
+  /* Status */
+  --color-blush-100: #FDE8E8;
+  --color-blush-500: #F08080;
+  --color-blush-600: #D96060;
+
+  /* Keep backward-compat aliases */
+  --color-matcha-100: #D9F0E8;
+  --color-matcha-300: #8DD1B9;
+  --color-matcha-400: #6BBFA0;
+  --color-matcha-500: #7CB9A0;
+  --color-matcha-600: #5A9E87;
+  --color-cream-50: #F7F4F0;
+  --color-forest-700: #6B6058;
+  --color-forest-900: #2E2E2E;
 }
 
+/* ─── Base ─── */
 @layer base {
   :root {
-    --background: #FDFCF5;
-    --foreground: #2D391F;
+    --background: #F7F4F0;
+    --foreground: #2E2E2E;
+    --surface: #FFFFFF;
+    --border: #E8E2DA;
+    --shadow-sage: rgba(124, 185, 160, 0.18);
+    --shadow-warm: rgba(0, 0, 0, 0.06);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: 'Nunito', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── Custom scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #B3E2D0;
+    border-radius: 99px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #7CB9A0;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: 'Inter', system-ui, sans-serif;
+/* ─── Keyframe Animations ─── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulseDot {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.4);
+    opacity: 0.7;
+  }
+}
+
+@keyframes bounceDot {
+
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes wiggle {
+
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-6px);
+  }
+
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+@keyframes searchPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(124, 185, 160, 0.5);
+  }
+
+  70% {
+    box-shadow: 0 0 0 16px rgba(124, 185, 160, 0);
+  }
+}
+
+/* ─── Utility animation classes ─── */
+.animate-fade-in-up {
+  animation: fadeInUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.animate-slide-in-bottom {
+  animation: slideInBottom 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-zoom-in {
+  animation: zoomIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-shake {
+  animation: shake 0.4s ease;
+}
+
+.animate-wiggle {
+  animation: wiggle 1.8s ease-in-out infinite;
+}
+
+.animate-search-pulse {
+  animation: searchPulse 1.5s ease-out infinite;
+}
+
+/* Staggered delays for lists */
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
 }

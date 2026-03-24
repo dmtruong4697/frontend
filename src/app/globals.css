@@ -4,54 +4,66 @@
 
 /* ─── Design Tokens ─── */
 @theme {
-  /* Sage-teal palette */
-  --color-sage-50: #F0F8F5;
-  --color-sage-100: #D9F0E8;
-  --color-sage-200: #B3E2D0;
-  --color-sage-300: #8DD1B9;
-  --color-sage-400: #6BBFA0;
-  --color-sage-500: #7CB9A0;
-  --color-sage-600: #5A9E87;
-  --color-sage-700: #3D7D69;
+  /* Raelo — Indigo/Violet primary */
+  --color-raelo-50:  #F2F0FF;
+  --color-raelo-100: #E4E1FF;
+  --color-raelo-200: #C9C3FF;
+  --color-raelo-300: #A89BFF;
+  --color-raelo-400: #8B78F8;
+  --color-raelo-500: #7C6EF0;
+  --color-raelo-600: #6451D8;
+  --color-raelo-700: #4D3CB8;
 
-  /* Peach accent */
-  --color-peach-100: #FEE8D8;
-  --color-peach-200: #FDD4B3;
-  --color-peach-400: #F4A261;
-  --color-peach-500: #E8864A;
+  /* Blush/Rose accent */
+  --color-blush-100: #FFE8EF;
+  --color-blush-200: #FFCFDF;
+  --color-blush-400: #F48FAD;
+  --color-blush-500: #E8738F;
 
   /* Neutral warm */
-  --color-warm-50: #F7F4F0;
-  --color-warm-100: #EDE8E1;
-  --color-warm-200: #DDD5CB;
-  --color-warm-700: #6B6058;
-  --color-warm-900: #2E2E2E;
+  --color-warm-50:  #F8F7FF;
+  --color-warm-100: #EEEDF8;
+  --color-warm-200: #DDDCF0;
+  --color-warm-700: #6B6880;
+  --color-warm-900: #1E1C2E;
 
-  /* Status */
-  --color-blush-100: #FDE8E8;
-  --color-blush-500: #F08080;
-  --color-blush-600: #D96060;
+  /* Error / danger */
+  --color-error-100: #FDE8E8;
+  --color-error-500: #F08080;
+  --color-error-600: #D96060;
 
-  /* Keep backward-compat aliases */
-  --color-matcha-100: #D9F0E8;
-  --color-matcha-300: #8DD1B9;
-  --color-matcha-400: #6BBFA0;
-  --color-matcha-500: #7CB9A0;
-  --color-matcha-600: #5A9E87;
-  --color-cream-50: #F7F4F0;
-  --color-forest-700: #6B6058;
-  --color-forest-900: #2E2E2E;
+  /* Backward-compat aliases (kept so existing Tailwind classes don't break) */
+  --color-matcha-100: #E4E1FF;
+  --color-matcha-300: #A89BFF;
+  --color-matcha-400: #8B78F8;
+  --color-matcha-500: #7C6EF0;
+  --color-matcha-600: #6451D8;
+  --color-sage-50:  #F2F0FF;
+  --color-sage-100: #E4E1FF;
+  --color-sage-200: #C9C3FF;
+  --color-sage-300: #A89BFF;
+  --color-sage-400: #8B78F8;
+  --color-sage-500: #7C6EF0;
+  --color-sage-600: #6451D8;
+  --color-sage-700: #4D3CB8;
+  --color-peach-100: #FFE8EF;
+  --color-peach-200: #FFCFDF;
+  --color-peach-400: #F48FAD;
+  --color-peach-500: #E8738F;
+  --color-cream-50: #F8F7FF;
+  --color-forest-700: #6B6880;
+  --color-forest-900: #1E1C2E;
 }
 
 /* ─── Base ─── */
 @layer base {
   :root {
-    --background: #F7F4F0;
-    --foreground: #2E2E2E;
+    --background: #F8F7FF;
+    --foreground: #1E1C2E;
     --surface: #FFFFFF;
-    --border: #E8E2DA;
-    --shadow-sage: rgba(124, 185, 160, 0.18);
-    --shadow-warm: rgba(0, 0, 0, 0.06);
+    --border: #E2E0F0;
+    --shadow-raelo: rgba(124, 110, 240, 0.15);
+    --shadow-warm: rgba(0, 0, 0, 0.05);
   }
 
   html {
@@ -77,12 +89,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #B3E2D0;
+    background: #C9C3FF;
     border-radius: 99px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #7CB9A0;
+    background: #7C6EF0;
   }
 }
 
@@ -192,11 +204,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(124, 185, 160, 0.5);
+    box-shadow: 0 0 0 0 rgba(124, 110, 240, 0.5);
   }
 
   70% {
-    box-shadow: 0 0 0 16px rgba(124, 185, 160, 0);
+    box-shadow: 0 0 0 16px rgba(124, 110, 240, 0);
   }
 }
 

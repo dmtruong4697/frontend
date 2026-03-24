@@ -87,7 +87,7 @@ export default function ChatPage() {
         style={{
           background: 'rgba(255,255,255,0.88)',
           backdropFilter: 'blur(16px)',
-          borderBottom: '1.5px solid #EDE8E1',
+          borderBottom: '1.5px solid #E2E0F0',
           boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
         }}
       >
@@ -96,7 +96,7 @@ export default function ChatPage() {
           <div className="relative">
             <div
               className="w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0"
-              style={{ background: 'linear-gradient(135deg,#FDD4B3,#F4A261)', boxShadow: '0 2px 8px rgba(244,162,97,0.3)' }}
+              style={{ background: 'linear-gradient(135deg,#FFCFDF,#F48FAD)', boxShadow: '0 2px 8px rgba(244,143,173,0.3)' }}
             >
               👤
             </div>
@@ -104,17 +104,17 @@ export default function ChatPage() {
             <span
               className="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white"
               style={{
-                background: isConnected ? '#6BBFA0' : '#F08080',
+                background: isConnected ? '#7C6EF0' : '#F08080',
                 animation: isConnected ? 'pulseDot 2s ease-in-out infinite' : 'none',
               }}
             />
           </div>
 
           <div>
-            <p className="text-sm font-black" style={{ color: '#2E2E2E' }}>{strangerLabel}</p>
+            <p className="text-sm font-black" style={{ color: '#1E1C2E' }}>{strangerLabel}</p>
             <p
               className="text-[11px] font-bold uppercase tracking-wider"
-              style={{ color: isConnected ? '#5A9E87' : '#D96060' }}
+              style={{ color: isConnected ? '#6451D8' : '#D96060' }}
             >
               {isConnected ? '● Online' : '○ Offline'}
             </p>
@@ -160,17 +160,17 @@ export default function ChatPage() {
                 style={
                   msg.isMe
                     ? {
-                        background: 'linear-gradient(135deg,#8DD1B9,#7CB9A0)',
+                        background: 'linear-gradient(135deg,#A89BFF,#7C6EF0)',
                         color: '#fff',
                         borderRadius: '1.25rem 1.25rem 0.375rem 1.25rem',
-                        boxShadow: '0 2px 12px rgba(124,185,160,0.3)',
+                        boxShadow: '0 2px 12px rgba(124,110,240,0.3)',
                       }
                     : {
                         background: '#fff',
-                        color: '#2E2E2E',
+                        color: '#1E1C2E',
                         borderRadius: '1.25rem 1.25rem 1.25rem 0.375rem',
                         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                        border: '1.5px solid #EDE8E1',
+                        border: '1.5px solid #E2E0F0',
                       }
                 }
               >
@@ -195,7 +195,7 @@ export default function ChatPage() {
                 background: '#fff',
                 borderRadius: '1.25rem 1.25rem 1.25rem 0.375rem',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                border: '1.5px solid #EDE8E1',
+                border: '1.5px solid #E2E0F0',
               }}
             >
               {[0, 1, 2].map((i) => (
@@ -203,7 +203,7 @@ export default function ChatPage() {
                   key={i}
                   className="w-2 h-2 rounded-full"
                   style={{
-                    background: '#8DD1B9',
+                    background: '#A89BFF',
                     animation: 'bounceDot 1.2s ease-in-out infinite',
                     animationDelay: `${i * 0.18}s`,
                   }}
@@ -242,7 +242,7 @@ export default function ChatPage() {
         style={{
           background: 'rgba(255,255,255,0.92)',
           backdropFilter: 'blur(16px)',
-          borderTop: '1.5px solid #EDE8E1',
+          borderTop: '1.5px solid #E2E0F0',
           boxShadow: '0 -2px 12px rgba(0,0,0,0.04)',
         }}
       >
@@ -262,13 +262,13 @@ export default function ChatPage() {
             }
             className="flex-1 px-5 py-3 text-sm font-semibold outline-none transition-all duration-200"
             style={{
-              background: '#F7F4F0',
-              border: '2px solid #EDE8E1',
+              background: '#F8F7FF',
+              border: '2px solid #E2E0F0',
               borderRadius: '999px',
-              color: '#2E2E2E',
+              color: '#1E1C2E',
             }}
-            onFocus={(e) => { e.target.style.borderColor = '#7CB9A0'; e.target.style.boxShadow = '0 0 0 3px rgba(124,185,160,0.15)'; }}
-            onBlur={(e) => { e.target.style.borderColor = '#EDE8E1'; e.target.style.boxShadow = 'none'; }}
+            onFocus={(e) => { e.target.style.borderColor = '#7C6EF0'; e.target.style.boxShadow = '0 0 0 3px rgba(124,110,240,0.15)'; }}
+            onBlur={(e) => { e.target.style.borderColor = '#E2E0F0'; e.target.style.boxShadow = 'none'; }}
           />
           <button
             onClick={handleSend}
@@ -276,12 +276,12 @@ export default function ChatPage() {
             className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 active:scale-90"
             style={{
               background: !input.trim() || !isConnected || strangerDisconnected
-                ? '#EDE8E1'
-                : 'linear-gradient(135deg,#8DD1B9,#7CB9A0)',
-              color: !input.trim() || !isConnected || strangerDisconnected ? '#B0A89E' : '#fff',
+                ? '#EEEDF8'
+                : 'linear-gradient(135deg,#A89BFF,#7C6EF0)',
+              color: !input.trim() || !isConnected || strangerDisconnected ? '#A8A6C0' : '#fff',
               boxShadow: !input.trim() || !isConnected || strangerDisconnected
                 ? 'none'
-                : '0 4px 16px rgba(124,185,160,0.35)',
+                : '0 4px 16px rgba(124,110,240,0.35)',
             }}
           >
             <Send className="w-4 h-4 ml-0.5" />

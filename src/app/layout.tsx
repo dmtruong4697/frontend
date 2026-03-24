@@ -11,8 +11,8 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: 'Matcha — Chat with strangers',
-  description: 'Meet someone new. Have a real conversation. Stay safe.',
+  title: 'Raelo — Random Talks, Real Moments',
+  description: 'Every stranger, a story. Discover someone new and have a real conversation.',
 };
 
 export default function RootLayout({

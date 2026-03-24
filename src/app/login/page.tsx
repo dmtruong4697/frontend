@@ -30,34 +30,34 @@ export default function LoginPage() {
     <div
       className="flex-1 flex flex-col items-center justify-center p-6 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, #E8F5EF 0%, #F7F4F0 45%, #FEE8D8 100%)',
+        background: 'linear-gradient(135deg, #EEE8FF 0%, #F8F7FF 45%, #FFE8EF 100%)',
         minHeight: '100dvh',
       }}
     >
       {/* Decorative blobs */}
       <div
         className="absolute top-[-80px] left-[-80px] w-56 h-56 rounded-full pointer-events-none"
-        style={{ background: 'rgba(124,185,160,0.18)', filter: 'blur(48px)' }}
+        style={{ background: 'rgba(124,110,240,0.14)', filter: 'blur(48px)' }}
       />
       <div
         className="absolute bottom-[-60px] right-[-60px] w-72 h-72 rounded-full pointer-events-none"
-        style={{ background: 'rgba(244,162,97,0.14)', filter: 'blur(56px)' }}
+        style={{ background: 'rgba(244,143,173,0.16)', filter: 'blur(56px)' }}
       />
       <div
         className="absolute top-1/2 left-[-40px] w-40 h-40 rounded-full pointer-events-none"
-        style={{ background: 'rgba(124,185,160,0.10)', filter: 'blur(40px)' }}
+        style={{ background: 'rgba(124,110,240,0.10)', filter: 'blur(40px)' }}
       />
 
       {/* Card */}
       <div
         className="w-full max-w-sm flex flex-col items-center gap-8 relative z-10 animate-fade-in-up"
         style={{
-          background: 'rgba(255,255,255,0.88)',
+          background: 'rgba(255,255,255,0.90)',
           backdropFilter: 'blur(20px)',
           borderRadius: '2.5rem',
           padding: '2.5rem 2rem',
-          boxShadow: '0 8px 48px rgba(124,185,160,0.18), 0 2px 12px rgba(0,0,0,0.06)',
-          border: '1.5px solid rgba(255,255,255,0.9)',
+          boxShadow: '0 8px 48px rgba(124,110,240,0.15), 0 2px 12px rgba(0,0,0,0.05)',
+          border: '1.5px solid rgba(255,255,255,0.95)',
         }}
       >
         {/* Logo + Animation */}
@@ -68,23 +68,23 @@ export default function LoginPage() {
           <div className="text-center space-y-1.5">
             <h1
               className="text-4xl font-black tracking-tight"
-              style={{ color: '#2E2E2E', letterSpacing: '-0.5px' }}
+              style={{ color: '#1E1C2E', letterSpacing: '-0.5px' }}
             >
-              Matcha 🍵
+              Raelo ✦
             </h1>
-            <p className="text-sm font-semibold" style={{ color: '#7CB9A0' }}>
-              Meet someone new today
+            <p className="text-sm font-semibold" style={{ color: '#7C6EF0' }}>
+              Every stranger, a story.
             </p>
           </div>
         </div>
 
         {/* Divider */}
         <div className="w-full flex items-center gap-3">
-          <div className="flex-1 h-px" style={{ background: '#E8E2DA' }} />
-          <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#B0A89E' }}>
+          <div className="flex-1 h-px" style={{ background: '#E2E0F0' }} />
+          <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#A8A6C0' }}>
             sign in
           </span>
-          <div className="flex-1 h-px" style={{ background: '#E8E2DA' }} />
+          <div className="flex-1 h-px" style={{ background: '#E2E0F0' }} />
         </div>
 
         {/* Google Login */}
@@ -102,9 +102,9 @@ export default function LoginPage() {
             <div
               className="w-full px-4 py-3 text-xs font-bold text-center rounded-2xl animate-shake"
               style={{
-                background: '#FDE8E8',
-                color: '#D96060',
-                border: '1.5px solid #F5C0C0',
+                background: '#FDE8EF',
+                color: '#C44B6E',
+                border: '1.5px solid #FFCFDF',
               }}
             >
               {error}
@@ -114,11 +114,11 @@ export default function LoginPage() {
 
         {/* Trust tags */}
         <div className="flex items-center gap-2 flex-wrap justify-center">
-          {['🔒 Secure', '🎲 Random', '✨ Friendly'].map((tag) => (
+          {['🔒 Private', '🌍 Global', '✨ Genuine'].map((tag) => (
             <span
               key={tag}
               className="px-3 py-1 rounded-full text-[11px] font-bold"
-              style={{ background: '#F0F8F5', color: '#5A9E87' }}
+              style={{ background: '#F2F0FF', color: '#6451D8' }}
             >
               {tag}
             </span>
@@ -127,7 +127,7 @@ export default function LoginPage() {
       </div>
 
       {/* Footer */}
-      <p className="mt-6 text-xs font-semibold text-center relative z-10" style={{ color: '#B0A89E' }}>
+      <p className="mt-6 text-xs font-semibold text-center relative z-10" style={{ color: '#A8A6C0' }}>
         By signing in you agree to our terms & community guidelines.
       </p>
     </div>

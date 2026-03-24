@@ -57,7 +57,7 @@ function Card({ children, className }: { children: React.ReactNode; className?: 
   return (
     <div
       className={cn('bg-white rounded-[2rem] p-6 flex flex-col gap-5', className)}
-      style={{ boxShadow: '0 4px 24px rgba(124,185,160,0.10), 0 1px 4px rgba(0,0,0,0.04)', border: '1.5px solid #EDE8E1' }}
+      style={{ boxShadow: '0 4px 24px rgba(124,110,240,0.08), 0 1px 4px rgba(0,0,0,0.04)', border: '1.5px solid #E2E0F0' }}
     >
       {children}
     </div>
@@ -67,11 +67,11 @@ function Card({ children, className }: { children: React.ReactNode; className?: 
 // ── Section heading ──
 function SectionHeading({ icon, children }: { icon: React.ReactNode; children: string }) {
   return (
-    <div className="flex items-center gap-2.5 pb-3" style={{ borderBottom: '1.5px solid #EDE8E1' }}>
-      <span className="w-8 h-8 rounded-2xl flex items-center justify-center shrink-0" style={{ background: '#D9F0E8' }}>
+    <div className="flex items-center gap-2.5 pb-3" style={{ borderBottom: '1.5px solid #E2E0F0' }}>
+      <span className="w-8 h-8 rounded-2xl flex items-center justify-center shrink-0" style={{ background: '#E4E1FF' }}>
         {icon}
       </span>
-      <h3 className="text-base font-black" style={{ color: '#2E2E2E' }}>{children}</h3>
+      <h3 className="text-base font-black" style={{ color: '#1E1C2E' }}>{children}</h3>
     </div>
   );
 }
@@ -85,8 +85,8 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       className="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all duration-150 border-2 select-none cursor-pointer"
       style={
         active
-          ? { background: '#D9F0E8', borderColor: '#7CB9A0', color: '#3D7D69' }
-          : { background: '#fff', borderColor: '#EDE8E1', color: '#6B6058' }
+          ? { background: '#E4E1FF', borderColor: '#7C6EF0', color: '#4D3CB8' }
+          : { background: '#fff', borderColor: '#E2E0F0', color: '#6B6880' }
       }
     >
       {children}
@@ -103,8 +103,8 @@ function GenderBtn({ active, label, onClick }: { active: boolean; label: string;
       className="flex-1 py-2.5 rounded-2xl font-bold capitalize text-sm transition-all duration-150 border-2 cursor-pointer"
       style={
         active
-          ? { background: '#7CB9A0', borderColor: '#7CB9A0', color: '#fff', boxShadow: '0 2px 12px rgba(124,185,160,0.3)' }
-          : { background: '#fff', borderColor: '#EDE8E1', color: '#6B6058' }
+          ? { background: '#7C6EF0', borderColor: '#7C6EF0', color: '#fff', boxShadow: '0 2px 12px rgba(124,110,240,0.3)' }
+          : { background: '#fff', borderColor: '#E2E0F0', color: '#6B6880' }
       }
     >
       {label}
@@ -250,8 +250,8 @@ export default function HomePage() {
       <div className="flex-1 flex items-center justify-center" style={{ background: 'var(--background)' }}>
         <div className="flex items-center gap-2">
           {[0, 1, 2].map((i) => (
-            <span key={i} className="w-3 h-3 rounded-full" style={{
-              background: '#7CB9A0',
+            <span key={i} className="w-3 h-3 rounded-full"            style={{
+              background: '#7C6EF0',
               animation: 'bounceDot 1.2s ease-in-out infinite',
               animationDelay: `${i * 0.18}s`,
             }} />
@@ -281,13 +281,13 @@ export default function HomePage() {
           {/* Avatar */}
           <div
             className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-black text-base"
-            style={{ background: 'linear-gradient(135deg,#8DD1B9,#7CB9A0)', color: '#fff', boxShadow: '0 2px 8px rgba(124,185,160,0.3)' }}
+            style={{ background: 'linear-gradient(135deg,#A89BFF,#7C6EF0)', color: '#fff', boxShadow: '0 2px 8px rgba(124,110,240,0.3)' }}
           >
             {user.name?.charAt(0)?.toUpperCase() || <UserIcon className="w-5 h-5" />}
           </div>
           <div>
-            <p className="text-sm font-black leading-tight" style={{ color: '#2E2E2E' }}>{user.name}</p>
-            <p className="text-xs font-semibold" style={{ color: '#7CB9A0' }}>Ready to chat ✨</p>
+            <p className="text-sm font-black leading-tight" style={{ color: '#1E1C2E' }}>{user.name}</p>
+            <p className="text-xs font-semibold" style={{ color: '#7C6EF0' }}>Ready to explore ✦</p>
           </div>
         </div>
 
@@ -308,7 +308,7 @@ export default function HomePage() {
               {isSearching && (
                 <div
                   className="absolute inset-[-12px] rounded-full animate-search-pulse"
-                  style={{ background: 'rgba(124,185,160,0.15)' }}
+                  style={{ background: 'rgba(124,110,240,0.15)' }}
                 />
               )}
               <div className="w-28 h-28 relative z-10">
@@ -317,7 +317,7 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-2xl font-black" style={{ color: '#2E2E2E', letterSpacing: '-0.3px' }}>
+              <h2 className="text-2xl font-black" style={{ color: '#1E1C2E', letterSpacing: '-0.3px' }}>
                 {isSearching ? 'Finding your match…' : 'Meet Someone New! 👋'}
               </h2>
               <p className="text-sm font-semibold leading-relaxed" style={{ color: '#8A8A8A' }}>
@@ -364,7 +364,7 @@ export default function HomePage() {
 
               {/* Gender */}
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#B0A89E' }}>Gender</label>
+                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Gender</label>
                 <div className="flex gap-2">
                   {['male', 'female', 'other'].map((g) => (
                     <GenderBtn
@@ -397,8 +397,8 @@ export default function HomePage() {
               {/* Interests */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#B0A89E' }}>Interests</label>
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: '#D9F0E8', color: '#5A9E87' }}>
+                  <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Interests</label>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: '#E4E1FF', color: '#6451D8' }}>
                     {myInterestList.length} selected
                   </span>
                 </div>
@@ -416,7 +416,7 @@ export default function HomePage() {
                     type="button"
                     onClick={() => setShowAllMyInterests(!showAllMyInterests)}
                     className="px-3.5 py-1.5 rounded-full text-xs font-bold border-2 border-dashed transition-all cursor-pointer"
-                    style={{ borderColor: '#8DD1B9', color: '#5A9E87' }}
+                    style={{ borderColor: '#A89BFF', color: '#6451D8' }}
                   >
                     {showAllMyInterests
                       ? <><ChevronUp className="w-3 h-3 inline mr-0.5" />Less</>
@@ -442,7 +442,7 @@ export default function HomePage() {
 
               {/* Preferred Gender */}
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#B0A89E' }}>Preferred Gender</label>
+                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Preferred Gender</label>
                 <div className="grid grid-cols-2 gap-2">
                   {['any', 'male', 'female', 'other'].map((g) => (
                     <GenderBtn
@@ -457,7 +457,7 @@ export default function HomePage() {
 
               {/* Age Range */}
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#B0A89E' }}>Age Range</label>
+                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Age Range</label>
                 <div className="grid grid-cols-2 gap-3">
                   <Select
                     label="Min"
@@ -477,7 +477,7 @@ export default function HomePage() {
               {/* Preferred Interests */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#B0A89E' }}>Shared Interests</label>
+                  <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Shared Interests</label>
                   <Sparkles className="w-3.5 h-3.5" style={{ color: '#F4A261' }} />
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -503,7 +503,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <p className="text-xs font-semibold italic text-center mt-auto" style={{ color: '#B0A89E' }}>
+              <p className="text-xs font-semibold italic text-center mt-auto" style={{ color: '#A8A6C0' }}>
                 ✨ We'll do our best to find a great match!
               </p>
             </Card>
@@ -512,7 +512,7 @@ export default function HomePage() {
           {/* ── Save Button ── */}
           <div className="flex flex-col items-center gap-2 pb-10">
             {saveSuccess && (
-              <p className="text-xs font-bold animate-fade-in" style={{ color: '#5A9E87' }}>
+              <p className="text-xs font-bold animate-fade-in" style={{ color: '#6451D8' }}>
                 ✅ Profile saved!
               </p>
             )}

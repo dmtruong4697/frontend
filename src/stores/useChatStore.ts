@@ -23,7 +23,12 @@ export const useChatStore = create<ChatState>()(
       strangerTyping: false,
       strangerDisconnected: false,
       addMessage: (message) =>
-        set((state) => ({ messages: [...state.messages, message] })),
+        set((state) => {
+          if (state.messages.find((m) => m.id === message.id)) {
+            return state;
+          }
+          return { messages: [...state.messages, message] };
+        }),
       setMessages: (messages) => set({ messages }),
       setConnectionStatus: (isConnected) => set({ isConnected }),
       setStrangerTyping: (strangerTyping) => set({ strangerTyping }),

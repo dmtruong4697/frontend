@@ -8,7 +8,6 @@ export const useWebSocket = () => {
   const ws = useRef<WebSocket | null>(null);
   const token = useAuthStore((state) => state.token);
   const roomID = useMatchStore((state) => state.roomID);
-  const strangerID = useMatchStore((state) => state.strangerID);
   const user = useAuthStore((state) => state.user);
   
   const {
@@ -40,7 +39,7 @@ export const useWebSocket = () => {
         switch (data.type) {
           case 'chat':
             // If the message is from me, I've already added it optimistically.
-            if (data.sender_id === user?.id) return;
+            if (data.sender_id === 'me') return;
 
             addMessage({
               id: data.id || Date.now().toString(),
@@ -58,7 +57,7 @@ export const useWebSocket = () => {
               sender_id: msg.sender_id,
               content: msg.content,
               timestamp: msg.created_at || new Date().toISOString(),
-              isMe: msg.sender_id === user?.id,
+              isMe: msg.sender_id === "me",
             }));
             setMessages(history);
             break;
@@ -107,17 +106,20 @@ export const useWebSocket = () => {
   const sendMessage = useCallback(
     (content: string, type: 'chat' | 'typing' | 'leave' = 'chat') => {
       if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+        const messageId = type === 'chat' ? `${Date.now()}-${Math.random().toString(36).substr(2, 9)}` : undefined;
+        
         const messagePayload = {
+          id: messageId,
           type,
-          sender_id: user?.id,
+          sender_id: 'me',
           content,
         };
         ws.current.send(JSON.stringify(messagePayload));
 
-        if (type === 'chat') {
+        if (type === 'chat' && messageId) {
            // Optimistically add message
            addMessage({
-             id: Date.now().toString(),
+             id: messageId,
              type: 'chat',
              content,
              sender_id: user?.id,

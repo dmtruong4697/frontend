@@ -227,7 +227,7 @@ export default function HomePage() {
       setError(null);
       const res = await api.post('/match/start');
       if (res.data?.room_id) {
-        setMatch(res.data.room_id, res.data.stranger_id);
+        setMatch(res.data.room_id);
         router.push('/chat');
       }
     } catch (err: any) {

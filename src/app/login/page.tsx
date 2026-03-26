@@ -8,14 +8,17 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { api } from '@/services/api';
 import FloatingDots from '@/components/login/FloatingDots';
 import appLogo from '@/assets/logos/app-logo.png';
+import { cn } from '@/components/ui/Button';
 
 export default function LoginPage() {
     const router = useRouter();
     const setAuth = useAuthStore((state) => state.setAuth);
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleGoogleSuccess = async (credentialResponse: any) => {
         try {
+            setIsLoading(true);
             const { credential } = credentialResponse;
             const response = await api.post('/auth/google', { id_token: credential });
             if (response.data?.token) {
@@ -24,6 +27,8 @@ export default function LoginPage() {
             }
         } catch (err: any) {
             setError(err?.message || 'Failed to authenticate with backend.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -92,9 +97,9 @@ export default function LoginPage() {
                                 </p>
                             </div>
 
-                            {/* Login Section */}
-                            <div className="space-y-10 opacity-0 animate-fade-in-up [animation-delay:1300ms]">
-                                <div className="w-full flex justify-center scale-105 origin-center">
+                             {/* Login Section */}
+                            <div className="relative space-y-10 opacity-0 animate-fade-in-up [animation-delay:1300ms]">
+                                <div className={cn("w-full flex justify-center scale-105 origin-center transition-opacity duration-300", isLoading && "opacity-20 pointer-events-none")}>
                                     <GoogleLogin
                                         onSuccess={handleGoogleSuccess}
                                         onError={() => setError('Google login failed. Please try again.')}
@@ -102,6 +107,23 @@ export default function LoginPage() {
                                         shape="pill"
                                     />
                                 </div>
+
+                                {isLoading && (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="flex items-center gap-1.5">
+                                            {[0, 1, 2].map((i) => (
+                                                <span 
+                                                    key={i} 
+                                                    className="w-2 h-2 rounded-full bg-raelo-500" 
+                                                    style={{
+                                                        animation: 'bounceDot 1.1s ease-in-out infinite',
+                                                        animationDelay: `${i * 0.16}s`,
+                                                    }} 
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {error && (
                                     <div className="p-5 bg-error-100/90 backdrop-blur-md border border-error-500/20 text-error-600 rounded-[28px] text-[13px] font-bold text-center animate-shake">

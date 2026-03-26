@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useMatchStore } from '@/stores/useMatchStore';
+import { useToastStore } from '@/stores/useToastStore';
 import { api } from '@/services/api';
 import { Button, cn } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -137,8 +138,8 @@ export default function HomePage() {
   const [showAllMyInterests, setShowAllMyInterests] = useState(false);
   const [showAllPrefInterests, setShowAllPrefInterests] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const { addToast } = useToastStore();
   const [error, setError] = useState<string | null>(null);
-  const [saveSuccess, setSaveSuccess] = useState(false);
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -179,7 +180,6 @@ export default function HomePage() {
     try {
       setIsSaving(true);
       setError(null);
-      setSaveSuccess(false);
       const interestsArray = profileForm.interests
         ? profileForm.interests.split(',').map((i) => i.trim()).filter((i) => i.length > 0)
         : [];
@@ -199,8 +199,7 @@ export default function HomePage() {
       const res: any = await api.put('/me/update', payload);
       if (res.status === 200) {
         updateUser(payload);
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 2500);
+        addToast('Profile updated successfully!', 'success');
       }
     } catch (err: any) {
       setError(err?.message || 'Failed to update profile');
@@ -509,13 +508,7 @@ export default function HomePage() {
             </Card>
           </div>
 
-          {/* ── Save Button ── */}
           <div className="flex flex-col items-center gap-2 pb-10">
-            {saveSuccess && (
-              <p className="text-xs font-bold animate-fade-in" style={{ color: '#6451D8' }}>
-                ✅ Profile saved!
-              </p>
-            )}
             <Button
               variant="secondary"
               className="w-full max-w-xs h-13 text-base font-black"

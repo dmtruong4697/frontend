@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   description: 'Every stranger, a story. Discover someone new and have a real conversation.',
 };
 
+import { ToastContainer } from '@/components/ui/Toast';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,6 +32,7 @@ export default function RootLayout({
       >
         <GoogleOAuthProvider clientId={googleClientId}>
           {children}
+          <ToastContainer />
         </GoogleOAuthProvider>
       </body>
     </html>

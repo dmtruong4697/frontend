@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { useMatchStore } from '@/stores/useMatchStore';
 import { useChatStore } from '@/stores/useChatStore';
 import { useWebSocket } from '@/hooks/useWebSocket';
+import { useToastStore } from '@/stores/useToastStore';
 import { api } from '@/services/api';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -43,8 +44,8 @@ export default function ChatPage() {
   const [selectedReason, setSelectedReason] = useState<(typeof REPORT_REASONS)[number]['code'] | ''>('');
   const [otherReason, setOtherReason] = useState('');
   const [reportError, setReportError] = useState<string | null>(null);
-  const [isReportSuccessOpen, setIsReportSuccessOpen] = useState(false);
   const [isSubmittingReport, setIsSubmittingReport] = useState(false);
+  const { addToast } = useToastStore();
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -144,7 +145,8 @@ export default function ChatPage() {
 
     try {
       await api.post('/report', payload);
-      setIsReportSuccessOpen(true);
+      addToast('Report submitted. Thank you for making Raelo safer.', 'success');
+      handleLeave();
     } catch (err) {
       setReportError('Failed to submit report. Please try again.');
     } finally {
@@ -482,39 +484,6 @@ export default function ChatPage() {
                 Confirm report
               </Button>
             </div>
-          </div>
-        </div>
-      )}
-      {/* ── Report Success Modal ── */}
-      {isReportSuccessOpen && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center px-4"
-          style={{ background: 'rgba(0,0,0,0.35)', backdropFilter: 'blur(10px)' }}
-          aria-modal="true"
-          role="dialog"
-        >
-          <div
-            className="w-full max-w-sm p-6 rounded-[2.5rem] bg-white text-center"
-            style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.2)', border: '2px solid #E2E0F0' }}
-          >
-            <div className="w-16 h-16 bg-[#F0EEFF] rounded-full flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="w-8 h-8 text-[#7C6EF0]" />
-            </div>
-            
-            <h3 className="text-xl font-black mb-2" style={{ color: '#1E1C2E' }}>
-              Report successful!
-            </h3>
-            <p className="text-sm font-semibold mb-6" style={{ color: '#8A8A8A' }}>
-              Thank you for helping keep Raelo safe. We'll review your report shortly.
-            </p>
-
-            <Button
-              variant="primary"
-              onClick={handleLeave}
-              className="w-full h-12 rounded-2xl text-base font-black"
-            >
-              OK, back home
-            </Button>
           </div>
         </div>
       )}

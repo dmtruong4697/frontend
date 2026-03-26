@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { useToastStore } from '@/stores/useToastStore';
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -31,6 +32,10 @@ api.interceptors.response.use(
       useAuthStore.getState().logout();
       window.location.href = '/login';
     }
+
+    const message = error.response?.data?.message || error.message || 'Something went wrong';
+    useToastStore.getState().addToast(message, 'error');
+
     return Promise.reject(error.response?.data || error);
   }
 );

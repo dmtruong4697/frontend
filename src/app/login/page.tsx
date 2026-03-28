@@ -1,20 +1,63 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { api } from '@/services/api';
 import FloatingDots from '@/components/login/FloatingDots';
-import appLogo from '@/assets/logos/app-logo.png';
 import { cn } from '@/components/ui/Button';
+
+// SVGs
+import img1 from '@/assets/svgs/undraw_connection_ts3f.svg';
+import img2 from '@/assets/svgs/undraw_into-the-night_nd84.svg';
+import img3 from '@/assets/svgs/undraw_respond_o54z.svg';
+import img4 from '@/assets/svgs/undraw_love_9mug.svg';
+import img5 from '@/assets/svgs/undraw_night-calls_ge07.svg';
+import img6 from '@/assets/svgs/undraw_private-data_7v0o.svg';
+
+const slides = [
+    {
+        image: img1,
+        quote: "New people, new stories.",
+    },
+    {
+        image: img2,
+        quote: "Chat with someone, anywhere.",
+    },
+    {
+        image: img4,
+        quote: "Find someone who resonates.",
+    },
+    {
+        image: img5,
+        quote: "Endless talks, zero pressure.",
+    },
+    {
+        image: img6,
+        quote: "Safe, secure, and anonymous.",
+    },
+    {
+        image: img3,
+        quote: "Your next conversation starts here.",
+    },
+];
 
 export default function LoginPage() {
     const router = useRouter();
     const setAuth = useAuthStore((state) => state.setAuth);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [currentSlide, setCurrentSlide] = useState(0);
+
+    // Auto-slide logic
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % slides.length);
+        }, 8000); // Change slide every 6 seconds
+        return () => clearInterval(timer);
+    }, []);
 
     const handleGoogleSuccess = async (credentialResponse: any) => {
         try {
@@ -54,18 +97,40 @@ export default function LoginPage() {
 
                 {/* Left Side: Visual Anchor (Centered in its half) */}
                 <section className="w-full md:w-1/2 flex flex-col items-center justify-center p-8 md:p-12 animate-fade-in order-2 md:order-1">
-                    <div className="flex flex-col items-center text-center space-y-10 group/logo">
-                        <div className="relative w-48 h-48 md:w-80 md:h-80 transition-transform duration-700 hover:scale-105">
-                            <Image
-                                src={appLogo}
-                                alt="Raelo Logo"
-                                fill
-                                sizes="(max-width: 768px) 192px, 320px"
-                                className="object-contain drop-shadow-[0_24px_50px_rgba(124,110,240,0.18)]"
-                                priority
-                            />
+                    <div className="flex flex-col items-center text-center space-y-12">
+                        {/* Image Slider */}
+                        <div className="relative w-72 h-72 md:w-[440px] md:h-[440px] flex items-center justify-center">
+                            {slides.map((slide, idx) => (
+                                <div
+                                    key={idx}
+                                    className={cn(
+                                        "absolute inset-0 transition-opacity duration-1000 ease-in-out",
+                                        idx === currentSlide ? "opacity-100" : "opacity-0 pointer-events-none"
+                                    )}
+                                >
+                                    <div className="relative w-full h-full">
+                                        <Image
+                                            src={slide.image}
+                                            alt={`Slide ${idx}`}
+                                            fill
+                                            className="object-contain drop-shadow-[0_24px_50px_rgba(124,110,240,0.18)]"
+                                            priority
+                                        />
+                                    </div>
+                                    <div className={cn(
+                                        "absolute -bottom-10 left-0 right-0 text-center transition-all duration-700",
+                                        idx === currentSlide ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                                    )}>
+                                        <p className="text-raelo-600/90 font-black italic text-sm md:text-xl tracking-tight">
+                                            {slide.quote}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="space-y-4 opacity-0 animate-fade-in-up [animation-delay:400ms]">
+
+                        {/* App Name & Slogan */}
+                        <div className="pt-10 space-y-4 opacity-0 animate-fade-in-up [animation-delay:400ms]">
                             <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-raelo-600 drop-shadow-sm">
                                 Raelo ✦
                             </h2>
@@ -97,7 +162,7 @@ export default function LoginPage() {
                                 </p>
                             </div>
 
-                             {/* Login Section */}
+                            {/* Login Section */}
                             <div className="relative space-y-10 opacity-0 animate-fade-in-up [animation-delay:1300ms]">
                                 <div className={cn("w-full flex justify-center scale-105 origin-center transition-opacity duration-300", isLoading && "opacity-20 pointer-events-none")}>
                                     <GoogleLogin
@@ -112,13 +177,13 @@ export default function LoginPage() {
                                     <div className="absolute inset-0 flex items-center justify-center">
                                         <div className="flex items-center gap-1.5">
                                             {[0, 1, 2].map((i) => (
-                                                <span 
-                                                    key={i} 
-                                                    className="w-2 h-2 rounded-full bg-raelo-500" 
+                                                <span
+                                                    key={i}
+                                                    className="w-2 h-2 rounded-full bg-raelo-500"
                                                     style={{
                                                         animation: 'bounceDot 1.1s ease-in-out infinite',
                                                         animationDelay: `${i * 0.16}s`,
-                                                    }} 
+                                                    }}
                                                 />
                                             ))}
                                         </div>

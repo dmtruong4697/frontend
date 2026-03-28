@@ -34,13 +34,8 @@ const prefLanguages: SelectOption[] = [
   ...languages,
 ];
 
-const ageOptions: SelectOption[] = Array.from({ length: 43 }, (_, i) => ({
-  label: (i + 18).toString(),
-  code: (i + 18).toString(),
-}));
-const prefAgeOptions: SelectOption[] = [...ageOptions, { label: '99+', code: '99' }];
-
 const interestOptions = [
+
   { label: 'Music', icon: '🎵' },
   { label: 'Gaming', icon: '🎮' },
   { label: 'Tech', icon: '💻' },
@@ -222,8 +217,43 @@ export default function HomePage() {
 
   const handleStartMatch = async () => {
     try {
-      setSearching(true);
       setError(null);
+
+      // 1. Validate Gender
+      if (!profileForm.gender) {
+        setError('Please select your gender first 👫');
+        addToast('Please select your gender', 'error');
+        return;
+      }
+
+      // 2. Validate My Age
+      const myAge = parseInt(profileForm.age);
+      if (!myAge || myAge < 1) {
+        setError('Please enter your age 🎂');
+        addToast('Please enter your age', 'error');
+        return;
+      }
+      if (myAge < 18) {
+        setError('You must be 18+ to join 🔞');
+        addToast('Minimum age is 18', 'error');
+        return;
+      }
+
+      // 3. Validate Preferences
+      const minAge = profileForm.preferences.min_age;
+      const maxAge = profileForm.preferences.max_age;
+      if (!minAge || !maxAge) {
+        setError('Please set your age range preference 🎯');
+        addToast('Set age range preference', 'error');
+        return;
+      }
+      if (minAge > maxAge) {
+        setError('Min age cannot be greater than Max age 📏');
+        addToast('Invalid age range', 'error');
+        return;
+      }
+
+      setSearching(true);
       const res = await api.post('/match/start');
       if (res.data?.room_id) {
         setMatch(res.data.room_id);
@@ -379,6 +409,7 @@ export default function HomePage() {
               {/* Age */}
               <Input
                 type="number"
+                inputMode="numeric"
                 label="Your Age"
                 placeholder="e.g. 22"
                 value={profileForm.age}
@@ -458,17 +489,21 @@ export default function HomePage() {
               <div className="space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Age Range</label>
                 <div className="grid grid-cols-2 gap-3">
-                  <Select
-                    label="Min"
-                    options={ageOptions}
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    label="Min Age"
+                    placeholder="18"
                     value={profileForm.preferences.min_age.toString()}
-                    onChange={(val) => setProfileForm({ ...profileForm, preferences: { ...profileForm.preferences, min_age: parseInt(val) } })}
+                    onChange={(e) => setProfileForm({ ...profileForm, preferences: { ...profileForm.preferences, min_age: parseInt(e.target.value) || 0 } })}
                   />
-                  <Select
-                    label="Max"
-                    options={prefAgeOptions}
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    label="Max Age"
+                    placeholder="99"
                     value={profileForm.preferences.max_age.toString()}
-                    onChange={(val) => setProfileForm({ ...profileForm, preferences: { ...profileForm.preferences, max_age: parseInt(val) } })}
+                    onChange={(e) => setProfileForm({ ...profileForm, preferences: { ...profileForm.preferences, max_age: parseInt(e.target.value) || 0 } })}
                   />
                 </div>
               </div>

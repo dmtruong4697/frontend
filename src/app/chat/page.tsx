@@ -162,8 +162,8 @@ export default function ChatPage() {
   return (
     <>
       <div
-        className="flex flex-col"
-        style={{ height: '100dvh', background: 'var(--background)' }}
+        className="fixed inset-0 flex flex-col overflow-hidden"
+        style={{ background: 'var(--background)' }}
       >
         {/* ── Header ── */}
         <header

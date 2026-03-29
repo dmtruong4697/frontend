@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { api } from '@/services/api';
@@ -201,7 +202,7 @@ export default function LoginPage() {
                             <div className="mt-14 pt-10 border-t border-raelo-500/10 opacity-0 animate-fade-in-up [animation-delay:1450ms]">
                                 <p className="text-[12px] font-medium text-warm-700/40 leading-relaxed text-center">
                                     By continuing, you agree to our <br className="md:hidden" />
-                                    <a href="#" className="text-raelo-400 hover:underline">Terms of Service</a> and <a href="#" className="text-raelo-400 hover:underline">Privacy Policy</a>.
+                                    <Link href="/terms" className="text-raelo-400 hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-raelo-400 hover:underline">Privacy Policy</Link>.
                                 </p>
                             </div>
 

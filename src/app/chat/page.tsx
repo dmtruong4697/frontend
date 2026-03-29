@@ -357,7 +357,7 @@ export default function ChatPage() {
                     ? 'Connecting…'
                     : 'Type a message…'
               }
-              className="flex-1 px-5 py-3 text-sm font-semibold outline-none transition-all duration-200"
+              className="flex-1 px-5 py-3 text-base font-semibold outline-none transition-all duration-200"
               style={{
                 background: '#F8F7FF',
                 border: '2px solid #E2E0F0',

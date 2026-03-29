@@ -55,7 +55,7 @@ export function Select({ label, options, value, onChange, placeholder = 'Select.
           onClick={() => { setIsOpen(!isOpen); setSearch(''); }}
           className={cn(
             'w-full px-4 py-3 bg-white border-2 rounded-2xl text-left flex items-center justify-between transition-all duration-200',
-            'font-semibold text-sm',
+            'font-semibold text-base',
             isOpen
               ? 'border-sage-500 ring-2 ring-sage-100'
               : 'border-warm-200 hover:border-sage-400'
@@ -95,7 +95,7 @@ export function Select({ label, options, value, onChange, placeholder = 'Select.
               placeholder="Search…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full py-1.5 text-sm bg-transparent outline-none text-warm-900 placeholder:text-warm-200 font-medium"
+              className="w-full py-1.5 text-base bg-transparent outline-none text-warm-900 placeholder:text-warm-200 font-medium"
             />
           </div>
 
@@ -111,7 +111,7 @@ export function Select({ label, options, value, onChange, placeholder = 'Select.
                     setSearch('');
                   }}
                   className={cn(
-                    'w-full px-3 py-2.5 rounded-xl flex items-center justify-between transition-colors duration-150 text-left text-sm font-semibold',
+                    'w-full px-3 py-2.5 rounded-xl flex items-center justify-between transition-colors duration-150 text-left text-base font-semibold',
                     value === opt.code
                       ? 'bg-sage-100 text-sage-700'
                       : 'text-warm-900 hover:bg-warm-50'

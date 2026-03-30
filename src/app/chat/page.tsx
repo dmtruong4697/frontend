@@ -49,7 +49,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!isHydrated) return;
-    if (!token) { router.replace('/login'); }
+    if (!token) { router.replace('/'); }
     if (!roomID) { router.replace('/home'); }
     return () => { disconnect(); };
   }, [isHydrated, token, roomID, router, disconnect]);

@@ -30,7 +30,7 @@ api.interceptors.response.use(
     // Handle global errors, e.g., unauthorized access
     if (error.response?.status === 401) {
       useAuthStore.getState().logout();
-      window.location.href = '/login';
+      window.location.href = '/';
     }
 
     const message = error.response?.data?.message || error.message || 'Something went wrong';

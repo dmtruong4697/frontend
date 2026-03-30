@@ -138,7 +138,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!isHydrated) return;
-    if (!token) { router.replace('/login'); return; }
+    if (!token) { router.replace('/'); return; }
     if (roomID) { router.replace('/chat'); }
   }, [token, roomID, isHydrated, router]);
 

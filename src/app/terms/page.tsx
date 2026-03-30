@@ -25,7 +25,7 @@ export default function TermsPage() {
                             Terms of Use
                         </h1>
                         <Link 
-                            href="/login" 
+                            href="/" 
                             className="text-sm font-bold text-raelo-500 hover:text-raelo-600 transition-colors bg-white/50 px-6 py-2 rounded-full border border-raelo-500/20 shadow-sm"
                         >
                             Back

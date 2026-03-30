@@ -13,6 +13,20 @@ const nunito = Nunito({
 export const metadata: Metadata = {
   title: 'Raelo — Random Talks, Real Moments',
   description: 'Every stranger, a story. Discover someone new and have a real conversation.',
+  openGraph: {
+    title: 'Raelo | Talk to Strangers Online',
+    description: 'Start a conversation that matters. Endless talks, zero pressure.',
+    url: 'https://www.raelo.me',
+    siteName: 'Raelo',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://www.raelo.me',
+  },
+  other: {
+    instagram: 'https://instagram.com/raelo.me',
+    tiktok: 'https://tiktok.com/@raelo.me',
+  },
 };
 
 import { ToastContainer } from '@/components/ui/Toast';

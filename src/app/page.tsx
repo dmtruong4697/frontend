@@ -233,6 +233,21 @@ export default function LoginPage() {
                     </div>
                 </section>
             </div>
+
+            {/* Global SEO Footer */}
+            <footer className="absolute bottom-0 w-full z-20 p-6 flex flex-col items-center justify-center text-xs md:text-sm font-bold text-warm-700/50">
+                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mb-2">
+                    <Link href="/terms" className="hover:text-raelo-500 transition-colors">Terms of Use</Link>
+                    <Link href="/privacy" className="hover:text-raelo-500 transition-colors">Privacy Policy</Link>
+                    <Link href="/blog/how-to-start-conversation" className="hover:text-raelo-500 transition-colors">Conversation Starters</Link>
+                    <Link href="/blog/anonymous-chat-safety" className="hover:text-raelo-500 transition-colors">Safety Guide</Link>
+                </div>
+                <div className="flex items-center gap-4 text-warm-700/40">
+                    <span>© {new Date().getFullYear()} Raelo.</span>
+                    <a href="https://tiktok.com/@raelo.me" target="_blank" rel="noopener noreferrer" className="hover:text-raelo-500 transition-colors">TikTok</a>
+                    <a href="https://instagram.com/raelo.me" target="_blank" rel="noopener noreferrer" className="hover:text-raelo-500 transition-colors">Instagram</a>
+                </div>
+            </footer>
         </main>
     );
 }

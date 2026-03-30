@@ -27,6 +27,9 @@ export const metadata: Metadata = {
     instagram: 'https://instagram.com/raelo.me',
     tiktok: 'https://tiktok.com/@raelo.me',
   },
+  icons: {
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 import { ToastContainer } from '@/components/ui/Toast';

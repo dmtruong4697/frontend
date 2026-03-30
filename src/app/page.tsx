@@ -98,9 +98,9 @@ export default function LoginPage() {
     };
 
     return (
-        <main className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-warm-50 font-sans">
-            {/* Unified Background Layer */}
-            <div className="absolute inset-0 z-0">
+        <main className="relative min-h-screen w-full flex flex-col overflow-x-hidden bg-warm-50 font-sans">
+            {/* Unified Background Layer (Fixed for scrollability) */}
+            <div className="fixed inset-0 z-0">
                 <div
                     className="absolute inset-0 bg-gradient-to-br from-raelo-50/90 via-warm-100/60 to-blush-100/40"
                 />
@@ -114,8 +114,8 @@ export default function LoginPage() {
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
             </div>
 
-            {/* Content Overlay */}
-            <div className="relative z-10 w-full flex flex-col md:flex-row items-center md:items-stretch min-h-screen pt-12 md:pt-0">
+            {/* Content Overlay (Min 1 Screen Height) */}
+            <div className="relative z-10 w-full flex-1 flex flex-col md:flex-row items-center justify-center md:items-stretch min-h-[100svh] pt-12 md:pt-0 pb-12">
 
                 {/* Left Side: Visual Anchor (Centered in its half) */}
                 <section className="w-full md:w-1/2 flex flex-col items-center justify-center p-8 md:p-12 animate-fade-in order-2 md:order-1">
@@ -234,9 +234,46 @@ export default function LoginPage() {
                 </section>
             </div>
 
+            {/* SEO Content Section (>250 Words, H1/Title matching) */}
+            <article className="relative z-10 w-full max-w-4xl mx-auto px-8 py-20 text-warm-900/80 leading-relaxed space-y-8 font-medium">
+                <div>
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tight text-raelo-600 mb-6 drop-shadow-sm">
+                        Experience Random Talks and Real Moments
+                    </h2>
+                    <p className="text-lg">
+                        Welcome to Raelo, the premier destination for engaging in random talks with complete strangers from around the world. We fundamentally believe that <strong>every stranger has a story</strong> worth hearing. Whether you are looking to kill time, make a new online friend, or simply explore different perspectives, Raelo guarantees real moments and authentic connections without the pressure of a traditional social network.
+                    </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8 pt-8">
+                    <div className="bg-white/40 backdrop-blur-md border border-white/60 p-8 rounded-3xl shadow-[0_20px_40px_-12px_rgba(124,110,240,0.08)]">
+                        <h3 className="text-xl font-bold text-warm-900 mb-4">Why every stranger has a story</h3>
+                        <p>
+                            In today's fast-paced digital world, genuine interactions are rare. On Raelo, the person on the other end of your screen brings a lifetime of unique experiences. We eliminate the superficial aspects of social media, allowing you to dive straight into the conversation. It is a space where every stranger has a story, and you have the absolute freedom to listen, share, and connect on a deeply human level.
+                        </p>
+                    </div>
+
+                    <div className="bg-white/40 backdrop-blur-md border border-white/60 p-8 rounded-3xl shadow-[0_20px_40px_-12px_rgba(124,110,240,0.08)]">
+                        <h3 className="text-xl font-bold text-warm-900 mb-4">Random Talks, Made Safe</h3>
+                        <p>
+                            While discovering that every stranger has a story is exciting, your safety comes first. Raelo is built differently. We enforce a strict anonymity protocol where no personal identifiable information is shared by default. If a conversation takes a turn you dislike, you can instantly disconnect and find a new match. Random talks should lead to real moments, not anxiety, which is why our reporting and moderation systems work around the clock.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="pt-8 space-y-4">
+                    <p>
+                        We designed Raelo specifically for those who crave meaningful spontaneity. The internet used to be a place to discover the unknown and forge spontaneous friendships. Raelo brings that magic back. Our intelligent matching system ensures that your random talks are paired with users who share similar intrinsic interests, increasing the likelihood that those talks turn into real moments you'll remember.
+                    </p>
+                    <p>
+                        Ready to find out what happens next? There is no complex sign-up required. Simply click the secure Google Login button above, define your basic interests, and let the algorithm introduce you to the world. Remember: stay respectful, stay safe, and embrace the fact that every stranger has a story!
+                    </p>
+                </div>
+            </article>
+
             {/* Global SEO Footer */}
-            <footer className="absolute bottom-0 w-full z-20 p-6 flex flex-col items-center justify-center text-xs md:text-sm font-bold text-warm-700/50">
-                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mb-2">
+            <footer className="relative w-full z-20 p-8 border-t border-raelo-500/10 flex flex-col items-center justify-center text-xs md:text-sm font-bold text-warm-700/50 bg-white/20 backdrop-blur-md">
+                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mb-4">
                     <Link href="/terms" className="hover:text-raelo-500 transition-colors">Terms of Use</Link>
                     <Link href="/privacy" className="hover:text-raelo-500 transition-colors">Privacy Policy</Link>
                     <Link href="/blog/how-to-start-conversation" className="hover:text-raelo-500 transition-colors">Conversation Starters</Link>

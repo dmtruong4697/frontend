@@ -235,39 +235,56 @@ export default function LoginPage() {
             </div>
 
             {/* SEO Content Section (>250 Words, H1/Title matching) */}
-            <article className="relative z-10 w-full max-w-4xl mx-auto px-8 py-20 text-warm-900/80 leading-relaxed space-y-8 font-medium">
-                <div>
-                    <h2 className="text-3xl md:text-5xl font-black tracking-tight text-raelo-600 mb-6 drop-shadow-sm">
-                        Experience Random Talks and Real Moments
-                    </h2>
-                    <p className="text-lg">
-                        Welcome to Raelo, the premier destination for engaging in random talks with complete strangers from around the world. We fundamentally believe that <strong>every stranger has a story</strong> worth hearing. Whether you are looking to kill time, make a new online friend, or simply explore different perspectives, Raelo guarantees real moments and authentic connections without the pressure of a traditional social network.
-                    </p>
-                </div>
+            <article className="relative z-10 w-full max-w-5xl mx-auto px-4 md:px-8 py-20 animate-fade-in-up [animation-delay:400ms]">
+                <div className="group relative bg-[#ffffff66] backdrop-blur-3xl border border-white/80 rounded-[48px] p-8 md:p-16 shadow-[0_40px_80px_-24px_rgba(124,110,240,0.12),0_20px_40px_-12px_rgba(0,0,0,0.02)] transition-all duration-700 hover:shadow-[0_60px_100px_-30px_rgba(124,110,240,0.18)]">
+                    
+                    <div className="max-w-3xl mx-auto space-y-12">
+                        {/* Header Section */}
+                        <div className="text-center space-y-6">
+                            <div className="inline-flex items-center justify-center p-3 bg-raelo-500/10 rounded-2xl mb-2 text-raelo-500">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            </div>
+                            <h2 className="text-3xl md:text-5xl font-black tracking-tighter bg-gradient-to-r from-raelo-600 to-blush-500 bg-clip-text text-transparent drop-shadow-sm pb-2">
+                                Experience Random Talks and Real Moments
+                            </h2>
+                            <p className="text-lg md:text-xl text-warm-800/80 font-medium leading-relaxed max-w-2xl mx-auto">
+                                Welcome to Raelo, the premier destination for engaging in random talks with complete strangers from around the world. We fundamentally believe that <strong className="text-raelo-600 font-bold">every stranger has a story</strong> worth hearing. Whether you are looking to kill time, make a new online friend, or simply explore different perspectives, Raelo guarantees real moments and authentic connections without the pressure of a traditional social network.
+                            </p>
+                        </div>
 
-                <div className="grid md:grid-cols-2 gap-8 pt-8">
-                    <div className="bg-white/40 backdrop-blur-md border border-white/60 p-8 rounded-3xl shadow-[0_20px_40px_-12px_rgba(124,110,240,0.08)]">
-                        <h3 className="text-xl font-bold text-warm-900 mb-4">Why every stranger has a story</h3>
-                        <p>
-                            In today's fast-paced digital world, genuine interactions are rare. On Raelo, the person on the other end of your screen brings a lifetime of unique experiences. We eliminate the superficial aspects of social media, allowing you to dive straight into the conversation. It is a space where every stranger has a story, and you have the absolute freedom to listen, share, and connect on a deeply human level.
-                        </p>
+                        {/* Split Features */}
+                        <div className="grid md:grid-cols-2 gap-6 pt-6">
+                            <div className="bg-white/60 backdrop-blur-md border border-white/80 p-8 rounded-[32px] shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden group/card">
+                                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover/card:opacity-20 transition-opacity duration-300">
+                                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.5 0-4.5-2-4.5-4.5h2c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5-1.12-2.5-2.5-2.5c-2.46 0-4.5-2.04-4.5-4.501 0-2.46 2.04-4.5 4.5-4.5 2.5 0 4.5 2 4.5 4.5h-2c0-1.38-1.12-2.5-2.5-2.5s-2.5 1.12-2.5 2.5 1.12 2.5 2.5 2.5c2.46 0 4.5 2.04 4.5 4.501 0 2.46-2.04 4.5-4.5 4.5z"/></svg>
+                                </div>
+                                <h3 className="text-xl font-bold text-warm-900 mb-4 relative z-10">Why every stranger has a story</h3>
+                                <p className="text-warm-800/70 font-medium leading-relaxed relative z-10">
+                                    In today's fast-paced digital world, genuine interactions are rare. On Raelo, the person on the other end of your screen brings a lifetime of unique experiences. We eliminate the superficial aspects of social media, allowing you to dive straight into the conversation. It is a space where every stranger has a story, and you have the absolute freedom to listen, share, and connect on a deeply human level.
+                                </p>
+                            </div>
+
+                            <div className="bg-white/60 backdrop-blur-md border border-white/80 p-8 rounded-[32px] shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden group/card">
+                                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover/card:opacity-20 transition-opacity duration-300">
+                                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                </div>
+                                <h3 className="text-xl font-bold text-warm-900 mb-4 relative z-10">Random Talks, Made Safe</h3>
+                                <p className="text-warm-800/70 font-medium leading-relaxed relative z-10">
+                                    While discovering that every stranger has a story is exciting, your safety comes first. Raelo is built differently. We enforce a strict anonymity protocol where no personal identifiable information is shared by default. If a conversation takes a turn you dislike, you can instantly disconnect and find a new match. Random talks should lead to real moments, not anxiety, which is why our reporting and moderation systems work around the clock.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Closing Thoughts */}
+                        <div className="pt-8 border-t border-raelo-500/10 space-y-5 text-center px-4">
+                            <p className="text-warm-800/70 font-medium leading-relaxed text-lg">
+                                We designed Raelo specifically for those who crave meaningful spontaneity. The internet used to be a place to discover the unknown and forge spontaneous friendships. Raelo brings that magic back. Our intelligent matching system ensures that your random talks are paired with users who share similar intrinsic interests, increasing the likelihood that those talks turn into real moments you'll remember.
+                            </p>
+                            <p className="text-warm-800/70 font-medium leading-relaxed text-lg">
+                                Ready to find out what happens next? There is no complex sign-up required. Simply click the secure Google Login button above, define your basic interests, and let the algorithm introduce you to the world. <strong className="text-raelo-600 font-bold opacity-90">Remember: stay respectful, stay safe, and embrace the fact that every stranger has a story!</strong>
+                            </p>
+                        </div>
                     </div>
-
-                    <div className="bg-white/40 backdrop-blur-md border border-white/60 p-8 rounded-3xl shadow-[0_20px_40px_-12px_rgba(124,110,240,0.08)]">
-                        <h3 className="text-xl font-bold text-warm-900 mb-4">Random Talks, Made Safe</h3>
-                        <p>
-                            While discovering that every stranger has a story is exciting, your safety comes first. Raelo is built differently. We enforce a strict anonymity protocol where no personal identifiable information is shared by default. If a conversation takes a turn you dislike, you can instantly disconnect and find a new match. Random talks should lead to real moments, not anxiety, which is why our reporting and moderation systems work around the clock.
-                        </p>
-                    </div>
-                </div>
-
-                <div className="pt-8 space-y-4">
-                    <p>
-                        We designed Raelo specifically for those who crave meaningful spontaneity. The internet used to be a place to discover the unknown and forge spontaneous friendships. Raelo brings that magic back. Our intelligent matching system ensures that your random talks are paired with users who share similar intrinsic interests, increasing the likelihood that those talks turn into real moments you'll remember.
-                    </p>
-                    <p>
-                        Ready to find out what happens next? There is no complex sign-up required. Simply click the secure Google Login button above, define your basic interests, and let the algorithm introduce you to the world. Remember: stay respectful, stay safe, and embrace the fact that every stranger has a story!
-                    </p>
                 </div>
             </article>
 

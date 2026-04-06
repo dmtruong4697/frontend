@@ -10,6 +10,9 @@ import { useMatchStore } from '@/stores/useMatchStore';
 import { api } from '@/services/api';
 import FloatingDots from '@/components/login/FloatingDots';
 import { cn } from '@/components/ui/Button';
+import LanguagePicker from '@/components/ui/LanguagePicker';
+import { useLocaleStore } from '@/stores/useLocaleStore';
+import { translations } from '@/locales/translations';
 
 // SVGs
 import img1 from '@/assets/svgs/undraw_connection_ts3f.svg';
@@ -19,43 +22,31 @@ import img4 from '@/assets/svgs/undraw_love_9mug.svg';
 import img5 from '@/assets/svgs/undraw_night-calls_ge07.svg';
 import img6 from '@/assets/svgs/undraw_private-data_7v0o.svg';
 
-const slides = [
-    {
-        image: img1,
-        quote: "New people, new stories.",
-    },
-    {
-        image: img2,
-        quote: "Chat with someone, anywhere.",
-    },
-    {
-        image: img4,
-        quote: "Find someone who resonates.",
-    },
-    {
-        image: img5,
-        quote: "Endless talks, zero pressure.",
-    },
-    {
-        image: img6,
-        quote: "Safe, secure, and anonymous.",
-    },
-    {
-        image: img3,
-        quote: "Your next conversation starts here.",
-    },
-];
 
 export default function LoginPage() {
     const router = useRouter();
     const token = useAuthStore((state) => state.token);
     const setAuth = useAuthStore((state) => state.setAuth);
     const roomID = useMatchStore((state) => state.roomID);
+    const { locale } = useLocaleStore();
     
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isHydrated, setIsHydrated] = useState(false);
+
+    const t = translations[locale]?.login || translations.en.login;
+    const tSEO = translations[locale]?.loginSEO || translations.en.loginSEO;
+    const tFooter = translations[locale]?.footer || translations.en.footer;
+
+    const slides = [
+        { image: img1, quote: t.slide1 },
+        { image: img2, quote: t.slide2 },
+        { image: img4, quote: t.slide3 },
+        { image: img5, quote: t.slide4 },
+        { image: img6, quote: t.slide5 },
+        { image: img3, quote: t.slide6 },
+    ];
 
     useEffect(() => {
         setIsHydrated(true);
@@ -99,6 +90,11 @@ export default function LoginPage() {
 
     return (
         <main className="relative min-h-screen w-full flex flex-col overflow-x-hidden bg-warm-50 font-sans">
+            {/* Absolute Language Picker */}
+            <div className="absolute top-6 right-6 md:top-8 md:right-12 z-[100] animate-fade-in">
+                {isHydrated && <LanguagePicker />}
+            </div>
+
             {/* Unified Background Layer (Fixed for scrollability) */}
             <div className="fixed inset-0 z-0">
                 <div
@@ -159,7 +155,7 @@ export default function LoginPage() {
                             <div className="flex items-center justify-center gap-3">
                                 <span className="h-px w-8 bg-raelo-300" />
                                 <p className="text-raelo-500/80 font-bold tracking-[0.2em] uppercase text-[10px] md:text-sm">
-                                    Connect • Discover • Chat
+                                    {isHydrated ? t.slogan : "Connect • Discover • Chat"}
                                 </p>
                                 <span className="h-px w-8 bg-raelo-300" />
                             </div>
@@ -176,11 +172,11 @@ export default function LoginPage() {
                             {/* Headline & Subtext */}
                             <div className="space-y-6 mb-14">
                                 <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-[0.92] text-warm-900 opacity-0 animate-fade-in-up [animation-delay:1000ms]">
-                                    Every stranger <br />
-                                    has a story.
+                                    {isHydrated ? t.heroTitleLine1 : "Every stranger"} <br />
+                                    {isHydrated ? t.heroTitleLine2 : "has a story."}
                                 </h1>
                                 <p className="text-warm-700/70 font-medium text-lg md:text-2xl opacity-0 animate-fade-in-up [animation-delay:1150ms]">
-                                    Start a conversation that matters.
+                                    {isHydrated ? t.heroSub : "Start a conversation that matters."}
                                 </p>
                             </div>
 
@@ -222,8 +218,8 @@ export default function LoginPage() {
                             {/* Footer Text */}
                             <div className="mt-14 pt-10 border-t border-raelo-500/10 opacity-0 animate-fade-in-up [animation-delay:1450ms]">
                                 <p className="text-[12px] font-medium text-warm-700/40 leading-relaxed text-center">
-                                    By continuing, you agree to our <br className="md:hidden" />
-                                    <Link href="/terms" className="text-raelo-400 hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-raelo-400 hover:underline">Privacy Policy</Link>.
+                                    {isHydrated ? t.agreeTerms : "By continuing, you agree to our"} <br className="md:hidden" />
+                                    <Link href="/terms" className="text-raelo-400 hover:underline">{isHydrated ? t.terms : "Terms of Service"}</Link> {isHydrated ? t.and : "and"} <Link href="/privacy" className="text-raelo-400 hover:underline">{isHydrated ? t.privacy : "Privacy Policy"}</Link>.
                                 </p>
                             </div>
 
@@ -245,10 +241,10 @@ export default function LoginPage() {
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                             </div>
                             <h2 className="text-3xl md:text-5xl font-black tracking-tighter bg-gradient-to-r from-raelo-600 to-blush-500 bg-clip-text text-transparent drop-shadow-sm pb-2">
-                                Experience Random Talks and Real Moments
+                                {tSEO?.title || "Experience Random Talks and Real Moments"}
                             </h2>
                             <p className="text-lg md:text-xl text-warm-800/80 font-medium leading-relaxed max-w-2xl mx-auto">
-                                Welcome to Raelo, the premier destination for engaging in random talks with complete strangers from around the world. We fundamentally believe that <strong className="text-raelo-600 font-bold">every stranger has a story</strong> worth hearing. Whether you are looking to kill time, make a new online friend, or simply explore different perspectives, Raelo guarantees real moments and authentic connections without the pressure of a traditional social network.
+                                {tSEO?.description || "Welcome to Raelo, the premier destination for engaging in random talks with complete strangers from around the world. We fundamentally believe that every stranger has a story worth hearing."}
                             </p>
                         </div>
 
@@ -258,9 +254,9 @@ export default function LoginPage() {
                                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover/card:opacity-20 transition-opacity duration-300">
                                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.5 0-4.5-2-4.5-4.5h2c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5-1.12-2.5-2.5-2.5c-2.46 0-4.5-2.04-4.5-4.501 0-2.46 2.04-4.5 4.5-4.5 2.5 0 4.5 2 4.5 4.5h-2c0-1.38-1.12-2.5-2.5-2.5s-2.5 1.12-2.5 2.5 1.12 2.5 2.5 2.5c2.46 0 4.5 2.04 4.5 4.501 0 2.46-2.04 4.5-4.5 4.5z"/></svg>
                                 </div>
-                                <h3 className="text-xl font-bold text-warm-900 mb-4 relative z-10">Why every stranger has a story</h3>
+                                <h3 className="text-xl font-bold text-warm-900 mb-4 relative z-10">{tSEO?.feat1Title || "Why every stranger has a story"}</h3>
                                 <p className="text-warm-800/70 font-medium leading-relaxed relative z-10">
-                                    In today's fast-paced digital world, genuine interactions are rare. On Raelo, the person on the other end of your screen brings a lifetime of unique experiences. We eliminate the superficial aspects of social media, allowing you to dive straight into the conversation. It is a space where every stranger has a story, and you have the absolute freedom to listen, share, and connect on a deeply human level.
+                                    {tSEO?.feat1Desc || "In today's fast-paced digital world, genuine interactions are rare. On Raelo, the person on the other end of your screen brings a lifetime of unique experiences."}
                                 </p>
                             </div>
 
@@ -268,9 +264,9 @@ export default function LoginPage() {
                                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover/card:opacity-20 transition-opacity duration-300">
                                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                                 </div>
-                                <h3 className="text-xl font-bold text-warm-900 mb-4 relative z-10">Random Talks, Made Safe</h3>
+                                <h3 className="text-xl font-bold text-warm-900 mb-4 relative z-10">{tSEO?.feat2Title || "Random Talks, Made Safe"}</h3>
                                 <p className="text-warm-800/70 font-medium leading-relaxed relative z-10">
-                                    While discovering that every stranger has a story is exciting, your safety comes first. Raelo is built differently. We enforce a strict anonymity protocol where no personal identifiable information is shared by default. If a conversation takes a turn you dislike, you can instantly disconnect and find a new match. Random talks should lead to real moments, not anxiety, which is why our reporting and moderation systems work around the clock.
+                                    {tSEO?.feat2Desc || "While discovering that every stranger has a story is exciting, your safety comes first."}
                                 </p>
                             </div>
                         </div>
@@ -278,10 +274,10 @@ export default function LoginPage() {
                         {/* Closing Thoughts */}
                         <div className="pt-8 border-t border-raelo-500/10 space-y-5 text-center px-4">
                             <p className="text-warm-800/70 font-medium leading-relaxed text-lg">
-                                We designed Raelo specifically for those who crave meaningful spontaneity. The internet used to be a place to discover the unknown and forge spontaneous friendships. Raelo brings that magic back. Our intelligent matching system ensures that your random talks are paired with users who share similar intrinsic interests, increasing the likelihood that those talks turn into real moments you'll remember.
+                                {tSEO?.closing1 || "We designed Raelo specifically for those who crave meaningful spontaneity. The internet used to be a place to discover the unknown and forge spontaneous friendships."}
                             </p>
                             <p className="text-warm-800/70 font-medium leading-relaxed text-lg">
-                                Ready to find out what happens next? There is no complex sign-up required. Simply click the secure Google Login button above, define your basic interests, and let the algorithm introduce you to the world. <strong className="text-raelo-600 font-bold opacity-90">Remember: stay respectful, stay safe, and embrace the fact that every stranger has a story!</strong>
+                                {tSEO?.closing2 || "Ready to find out what happens next? There is no complex sign-up required."} <br/><strong className="text-raelo-600 font-bold opacity-90 mt-2 block">{tSEO?.closingBold || "Remember: stay respectful, stay safe, and embrace the fact that every stranger has a story!"}</strong>
                             </p>
                         </div>
                     </div>
@@ -291,13 +287,13 @@ export default function LoginPage() {
             {/* Global SEO Footer */}
             <footer className="relative w-full z-20 p-8 border-t border-raelo-500/10 flex flex-col items-center justify-center text-xs md:text-sm font-bold text-warm-700/50 bg-white/20 backdrop-blur-md">
                 <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mb-4">
-                    <Link href="/terms" className="hover:text-raelo-500 transition-colors">Terms of Use</Link>
-                    <Link href="/privacy" className="hover:text-raelo-500 transition-colors">Privacy Policy</Link>
-                    <Link href="/blog/how-to-start-conversation" className="hover:text-raelo-500 transition-colors">Conversation Starters</Link>
-                    <Link href="/blog/anonymous-chat-safety" className="hover:text-raelo-500 transition-colors">Safety Guide</Link>
+                    <Link href="/terms" className="hover:text-raelo-500 transition-colors">{tFooter?.terms || "Terms of Use"}</Link>
+                    <Link href="/privacy" className="hover:text-raelo-500 transition-colors">{tFooter?.privacy || "Privacy Policy"}</Link>
+                    <Link href="/blog/how-to-start-conversation" className="hover:text-raelo-500 transition-colors">{tFooter?.conversationStart || "Conversation Starters"}</Link>
+                    <Link href="/blog/anonymous-chat-safety" className="hover:text-raelo-500 transition-colors">{tFooter?.safetyGuide || "Safety Guide"}</Link>
                 </div>
                 <div className="flex items-center gap-4 text-warm-700/40">
-                    <span>© {new Date().getFullYear()} Raelo.</span>
+                    <span>{tFooter?.copyright || `© ${new Date().getFullYear()} Raelo.`}</span>
                     <a href="https://tiktok.com/@raelo.me" target="_blank" rel="noopener noreferrer" className="hover:text-raelo-500 transition-colors">TikTok</a>
                     <a href="https://instagram.com/raelo.me" target="_blank" rel="noopener noreferrer" className="hover:text-raelo-500 transition-colors">Instagram</a>
                 </div>

@@ -2,8 +2,18 @@
 
 import Link from 'next/link';
 import FloatingDots from '@/components/login/FloatingDots';
+import { useLocaleStore } from '@/stores/useLocaleStore';
+import { translations } from '@/locales/translations';
+import { useEffect, useState } from 'react';
 
 export default function PrivacyPage() {
+    const { locale } = useLocaleStore();
+    const [isHydrated, setIsHydrated] = useState(false);
+    useEffect(() => { setIsHydrated(true); }, []);
+    const t = translations[locale]?.privacy || translations.en.privacy;
+
+    if (!isHydrated) return null;
+
     return (
         <main className="relative min-h-screen w-full flex items-center justify-center p-4 md:p-8 overflow-hidden bg-warm-50 font-sans">
             {/* Unified Background Layer */}
@@ -22,73 +32,65 @@ export default function PrivacyPage() {
                     {/* Header */}
                     <div className="flex items-center justify-between mb-8 border-b border-raelo-500/10 pb-6 shrink-0">
                         <h1 className="text-3xl md:text-5xl font-black tracking-tight text-raelo-600">
-                            Privacy Policy
+                            {t?.title || "Privacy Policy"}
                         </h1>
                         <Link 
                             href="/" 
                             className="text-sm font-bold text-raelo-500 hover:text-raelo-600 transition-colors bg-white/50 px-6 py-2 rounded-full border border-raelo-500/20 shadow-sm"
                         >
-                            Back
+                            {t?.backBtn || "Back"}
                         </Link>
                     </div>
 
                     {/* Scrollable Content - Ensured Scrolling */}
                     <div className="overflow-y-auto pr-4 custom-scrollbar text-warm-900/80 leading-relaxed space-y-8 flex-1">
                         <section>
-                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">1. Introduction</h2>
-                            <p>
-                                Welcome to <strong>Raelo</strong>. We respect your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and safeguard your information when you use our services.
-                            </p>
+                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">{t?.introTitle || "1. Introduction"}</h2>
+                            <p>{t?.introDesc || "Welcome to Raelo. We respect your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and safeguard your information when you use our services."}</p>
                         </section>
 
                         <section>
-                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">2. Data We Collect</h2>
+                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">{t?.dataCollectTitle || "2. Data We Collect"}</h2>
                             <ul className="list-disc pl-5 space-y-3">
-                                <li><strong>Identity Information:</strong> We collect your name and email address from your Google account when you sign in via Google OAuth.</li>
-                                <li><strong>Technical Information:</strong> We automatically collect your IP address, device type, operating system, and browser information for pairing and security purposes.</li>
-                                <li><strong>Usage Data:</strong> We track access times and matching history to improve our service and prevent platform abuse.</li>
+                                <li>{t?.dataId || "Identity Information: We collect your name and email address from your Google account when you sign in via Google OAuth."}</li>
+                                <li>{t?.dataTech || "Technical Information: We automatically collect your IP address, device type, operating system, and browser information for pairing and security purposes."}</li>
+                                <li>{t?.dataUsage || "Usage Data: We track access times and matching history to improve our service and prevent platform abuse."}</li>
                             </ul>
                         </section>
 
                         <section>
-                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">3. How We Use Your Data</h2>
-                            <p>We use the collected data to:</p>
+                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">{t?.howUseTitle || "3. How We Use Your Data"}</h2>
+                            <p>{t?.useIntro || "We use the collected data to:"}</p>
                             <ul className="list-disc pl-5 mt-2 space-y-3">
-                                <li>Provide and maintain our random chat matching service.</li>
-                                <li>Monitor and prevent illegal activities, harassment, or spam, in compliance with standard safety protocols and local regulations.</li>
-                                <li>Enhance user experience and optimize system performance.</li>
-                                <li>Support dispute resolution or investigate reports of misconduct from other users.</li>
+                                <li>{t?.use1 || "Provide and maintain our random chat matching service."}</li>
+                                <li>{t?.use2 || "Monitor and prevent illegal activities, harassment, or spam, in compliance with standard safety protocols."}</li>
+                                <li>{t?.use3 || "Enhance user experience and optimize system performance."}</li>
+                                <li>{t?.use4 || "Support dispute resolution or investigate reports of misconduct from other users."}</li>
                             </ul>
                         </section>
 
                         <section>
-                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">4. Your Rights</h2>
-                            <p>
-                                You have the following rights regarding your personal data:
-                            </p>
+                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">{t?.rightsTitle || "4. Your Rights"}</h2>
+                            <p>{t?.rightsIntro || "You have the following rights regarding your personal data:"}</p>
                             <ul className="list-disc pl-5 mt-2 space-y-3">
-                                <li>The right to access or receive a copy of your personal data.</li>
-                                <li>The right to request correction or deletion of your personal data.</li>
-                                <li>The right to withdraw consent for data processing at any time (this may limit your ability to use our service).</li>
+                                <li>{t?.right1 || "The right to access or receive a copy of your personal data."}</li>
+                                <li>{t?.right2 || "The right to request correction or deletion of your personal data."}</li>
+                                <li>{t?.right3 || "The right to withdraw consent for data processing at any time."}</li>
                             </ul>
                         </section>
 
                         <section>
-                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">5. Storage and Security</h2>
-                            <p>
-                                Your personal data is stored securely on encrypted servers. We implement industry-standard technical and organizational measures to prevent unauthorized access, alteration, or disclosure of your information.
-                            </p>
+                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">{t?.securityTitle || "5. Storage and Security"}</h2>
+                            <p>{t?.securityDesc || "Your personal data is stored securely on encrypted servers. We implement industry-standard technical and organizational measures to prevent unauthorized access, alteration, or disclosure of your information."}</p>
                         </section>
 
                         <section>
-                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">6. Third-Party Services</h2>
-                            <p>
-                                We use Google for authentication. Google's use of your info is governed by their own privacy policies. We do not sell your personal data to third parties for marketing purposes.
-                            </p>
+                            <h2 className="text-xl md:text-2xl font-bold text-warm-900 mb-4">{t?.thirdPartyTitle || "6. Third-Party Services"}</h2>
+                            <p>{t?.thirdPartyDesc || "We use Google for authentication. Google's use of your info is governed by their own privacy policies. We do not sell your personal data to third parties for marketing purposes."}</p>
                         </section>
 
                         <section className="pt-10 pb-4 border-t border-raelo-500/10 text-sm text-warm-700/50">
-                            Last Updated: March 29, 2026.
+                            {t?.lastUpdated || "Last Updated: March 29, 2026."}
                         </section>
                     </div>
                 </div>

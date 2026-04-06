@@ -12,6 +12,9 @@ import { Select, SelectOption } from '@/components/ui/Select';
 import { LogOut, User as UserIcon, ChevronDown, ChevronUp, Sparkles, Heart } from 'lucide-react';
 import Lottie from 'lottie-react';
 import funnyDogAnimation from '@/assets/animations/funny-dog.json';
+import { useLocaleStore } from '@/stores/useLocaleStore';
+import { translations } from '@/locales/translations';
+import LanguagePicker from '@/components/ui/LanguagePicker';
 
 const languages: SelectOption[] = [
   { label: 'Vietnamese', code: 'VN', icon: '🇻🇳' },
@@ -113,8 +116,11 @@ export default function HomePage() {
   const { user, token, logout, updateUser } = useAuthStore();
   const { isSearching, setSearching, setMatch, roomID } = useMatchStore();
   const [isHydrated, setIsHydrated] = useState(false);
+  const { locale } = useLocaleStore();
 
   useEffect(() => { setIsHydrated(true); }, []);
+
+  const t = translations[locale]?.home || translations.en.home;
 
   const [profileForm, setProfileForm] = useState({
     gender: user?.gender || '',
@@ -194,7 +200,7 @@ export default function HomePage() {
       const res: any = await api.put('/me/update', payload);
       if (res.status === 200) {
         updateUser(payload);
-        addToast('Profile updated successfully!', 'success');
+        addToast(t?.toastProfileUpdate || 'Profile updated successfully!', 'success');
       }
     } catch (err: any) {
       setError(err?.message || 'Failed to update profile');
@@ -221,21 +227,21 @@ export default function HomePage() {
 
       // 1. Validate Gender
       if (!profileForm.gender) {
-        setError('Please select your gender first 👫');
-        addToast('Please select your gender', 'error');
+        setError(t?.errGender || 'Please select your gender first 👫');
+        addToast(t?.errGender || 'Please select your gender', 'error');
         return;
       }
 
       // 2. Validate My Age
       const myAge = parseInt(profileForm.age);
       if (!myAge || myAge < 1) {
-        setError('Please enter your age 🎂');
-        addToast('Please enter your age', 'error');
+        setError(t?.errAgeEmpty || 'Please enter your age 🎂');
+        addToast(t?.errAgeEmpty || 'Please enter your age', 'error');
         return;
       }
       if (myAge < 18) {
-        setError('You must be 18+ to join 🔞');
-        addToast('Minimum age is 18', 'error');
+        setError(t?.errAgeUnder18 || 'You must be 18+ to join 🔞');
+        addToast(t?.errAgeUnder18 || 'Minimum age is 18', 'error');
         return;
       }
 
@@ -243,13 +249,13 @@ export default function HomePage() {
       const minAge = profileForm.preferences.min_age;
       const maxAge = profileForm.preferences.max_age;
       if (!minAge || !maxAge) {
-        setError('Please set your age range preference 🎯');
-        addToast('Set age range preference', 'error');
+        setError(t?.errAgeRangePref || 'Please set your age range preference 🎯');
+        addToast(t?.errAgeRangePref || 'Set age range preference', 'error');
         return;
       }
       if (minAge > maxAge) {
-        setError('Min age cannot be greater than Max age 📏');
-        addToast('Invalid age range', 'error');
+        setError(t?.errAgeInvalid || 'Min age cannot be greater than Max age 📏');
+        addToast(t?.errAgeInvalid || 'Invalid age range', 'error');
         return;
       }
 
@@ -316,14 +322,17 @@ export default function HomePage() {
           </div>
           <div>
             <p className="text-sm font-black leading-tight" style={{ color: '#1E1C2E' }}>{user.name}</p>
-            <p className="text-xs font-semibold" style={{ color: '#7C6EF0' }}>Ready to explore ✦</p>
+            <p className="text-xs font-semibold" style={{ color: '#7C6EF0' }}>{t?.readyToExplore || "Ready to explore ✦"}</p>
           </div>
         </div>
 
-        <Button variant="ghost" onClick={logout} className="!px-3 !py-2 rounded-full text-xs gap-1.5">
-          <LogOut className="w-4 h-4" />
-          <span className="hidden sm:inline">Log out</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <LanguagePicker />
+          <Button variant="ghost" onClick={logout} className="!px-3 !py-2 rounded-full text-xs gap-1.5">
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">{t?.logOut || "Log out"}</span>
+          </Button>
+        </div>
       </header>
 
       {/* ── Main ── */}
@@ -347,12 +356,12 @@ export default function HomePage() {
 
             <div className="space-y-2">
               <h2 className="text-2xl font-black" style={{ color: '#1E1C2E', letterSpacing: '-0.3px' }}>
-                {isSearching ? 'Finding your match…' : 'Meet Someone New! 👋'}
+                {isSearching ? (t?.findingMatch || 'Finding your match…') : (t?.meetNew || 'Meet Someone New! 👋')}
               </h2>
               <p className="text-sm font-semibold leading-relaxed" style={{ color: '#8A8A8A' }}>
                 {isSearching
-                  ? 'Hang tight, we\'re searching the world for you 🌍'
-                  : 'Press the button below and start a friendly conversation!'}
+                  ? (t?.hangTight || 'Hang tight, we\'re searching the world for you 🌍')
+                  : (t?.pressButton || 'Press the button below and start a friendly conversation!')}
               </p>
             </div>
 
@@ -369,7 +378,7 @@ export default function HomePage() {
                 className="w-full max-w-xs h-13 text-base"
                 onClick={handleStopMatch}
               >
-                Stop Searching
+                {t?.stopSearching || "Stop Searching"}
               </Button>
             ) : (
               <Button
@@ -377,7 +386,7 @@ export default function HomePage() {
                 className="w-full max-w-xs h-13 text-base"
                 onClick={handleStartMatch}
               >
-                <Sparkles className="w-4 h-4" /> Find a Match
+                <Sparkles className="w-4 h-4" /> {t?.findMatchBtn || "Find a Match"}
               </Button>
             )}
           </Card>
@@ -388,7 +397,7 @@ export default function HomePage() {
             {/* ── Profile ── */}
             <Card>
               <SectionHeading icon={<UserIcon className="w-4 h-4 text-sage-600" />}>
-                Your Profile
+                {t?.yourProfile || "Your Profile"}
               </SectionHeading>
 
               {/* Gender */}
@@ -410,15 +419,15 @@ export default function HomePage() {
               <Input
                 type="number"
                 inputMode="numeric"
-                label="Your Age"
-                placeholder="e.g. 22"
+                label={t?.myAgeLabel || "Your Age"}
+                placeholder={t?.agePlaceholder || "e.g. 22"}
                 value={profileForm.age}
                 onChange={(e) => setProfileForm({ ...profileForm, age: e.target.value })}
               />
 
               {/* Language */}
               <Select
-                label="Your Language"
+                label={t?.myLanguageLabel || "Your Language"}
                 options={prefLanguages}
                 value={profileForm.language}
                 onChange={(val) => setProfileForm({ ...profileForm, language: val })}
@@ -427,9 +436,9 @@ export default function HomePage() {
               {/* Interests */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Interests</label>
+                  <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>{t?.interestsLabel || "Interests"}</label>
                   <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: '#E4E1FF', color: '#6451D8' }}>
-                    {myInterestList.length} selected
+                    {myInterestList.length} {t?.selected || "selected"}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -449,8 +458,8 @@ export default function HomePage() {
                     style={{ borderColor: '#A89BFF', color: '#6451D8' }}
                   >
                     {showAllMyInterests
-                      ? <><ChevronUp className="w-3 h-3 inline mr-0.5" />Less</>
-                      : <><ChevronDown className="w-3 h-3 inline mr-0.5" />+{interestOptions.length - 6} more</>}
+                      ? <><ChevronUp className="w-3 h-3 inline mr-0.5" />{t?.less || "Less"}</>
+                      : <><ChevronDown className="w-3 h-3 inline mr-0.5" />+{interestOptions.length - 6} {t?.more || "more"}</>}
                   </button>
                 </div>
               </div>
@@ -459,12 +468,12 @@ export default function HomePage() {
             {/* ── Preferences ── */}
             <Card>
               <SectionHeading icon={<Heart className="w-4 h-4 text-sage-600" />}>
-                Who You Want to Meet
+                {t?.whoYouWant || "Who You Want to Meet"}
               </SectionHeading>
 
               {/* Preferred Language */}
               <Select
-                label="Preferred Language"
+                label={t?.prefLangLabel || "Preferred Language"}
                 options={prefLanguages}
                 value={profileForm.preferences.language}
                 onChange={(val) => setProfileForm({ ...profileForm, preferences: { ...profileForm.preferences, language: val } })}
@@ -472,7 +481,7 @@ export default function HomePage() {
 
               {/* Preferred Gender */}
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Preferred Gender</label>
+                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>{t?.prefGenderLabel || "Preferred Gender"}</label>
                 <div className="grid grid-cols-2 gap-2">
                   {['any', 'male', 'female', 'other'].map((g) => (
                     <GenderBtn
@@ -487,12 +496,12 @@ export default function HomePage() {
 
               {/* Age Range */}
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Age Range</label>
+                <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>{t?.ageRangeLabel || "Age Range"}</label>
                 <div className="grid grid-cols-2 gap-3">
                   <Input
                     type="number"
                     inputMode="numeric"
-                    label="Min Age"
+                    label={t?.minAgeLabel || "Min Age"}
                     placeholder="18"
                     value={profileForm.preferences.min_age.toString()}
                     onChange={(e) => setProfileForm({ ...profileForm, preferences: { ...profileForm.preferences, min_age: parseInt(e.target.value) || 0 } })}
@@ -500,7 +509,7 @@ export default function HomePage() {
                   <Input
                     type="number"
                     inputMode="numeric"
-                    label="Max Age"
+                    label={t?.maxAgeLabel || "Max Age"}
                     placeholder="99"
                     value={profileForm.preferences.max_age.toString()}
                     onChange={(e) => setProfileForm({ ...profileForm, preferences: { ...profileForm.preferences, max_age: parseInt(e.target.value) || 0 } })}
@@ -511,7 +520,7 @@ export default function HomePage() {
               {/* Preferred Interests */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>Shared Interests</label>
+                  <label className="text-xs font-black uppercase tracking-widest" style={{ color: '#A8A6C0' }}>{t?.sharedInterestsLabel || "Shared Interests"}</label>
                   <Sparkles className="w-3.5 h-3.5" style={{ color: '#F4A261' }} />
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -531,14 +540,14 @@ export default function HomePage() {
                     style={{ borderColor: '#8DD1B9', color: '#5A9E87' }}
                   >
                     {showAllPrefInterests
-                      ? <><ChevronUp className="w-3 h-3 inline mr-0.5" />Less</>
-                      : <><ChevronDown className="w-3 h-3 inline mr-0.5" />+{interestOptions.length - 6} more</>}
+                      ? <><ChevronUp className="w-3 h-3 inline mr-0.5" />{t?.less || "Less"}</>
+                      : <><ChevronDown className="w-3 h-3 inline mr-0.5" />+{interestOptions.length - 6} {t?.more || "more"}</>}
                   </button>
                 </div>
               </div>
 
               <p className="text-xs font-semibold italic text-center mt-auto" style={{ color: '#A8A6C0' }}>
-                ✨ We'll do our best to find a great match!
+                {t?.doOurBest || "✨ We'll do our best to find a great match!"}
               </p>
             </Card>
           </div>
@@ -551,7 +560,7 @@ export default function HomePage() {
               isLoading={isSaving}
               disabled={isSearching}
             >
-              Save Changes 💾
+              {t?.saveChangesBtn || "Save Changes 💾"}
             </Button>
           </div>
 

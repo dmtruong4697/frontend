@@ -12,6 +12,9 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { LogOut, Send, Flag, Sparkles } from 'lucide-react';
 import { cn } from '@/components/ui/Button';
+import LanguagePicker from '@/components/ui/LanguagePicker';
+import { useLocaleStore } from '@/stores/useLocaleStore';
+import { translations } from '@/locales/translations';
 
 export default function ChatPage() {
   const router = useRouter();
@@ -24,6 +27,7 @@ export default function ChatPage() {
     strangerDisconnected,
     clearChat,
   } = useChatStore();
+  const { locale } = useLocaleStore();
 
   const [isHydrated, setIsHydrated] = useState(false);
   const { sendMessage, disconnect } = useWebSocket();
@@ -32,12 +36,14 @@ export default function ChatPage() {
 
   useEffect(() => { setIsHydrated(true); }, []);
 
+  const t = translations[locale]?.chat || translations.en.chat;
+
   const REPORT_REASONS = [
-    { code: 'spam', label: 'Spam/Scam' },
-    { code: 'harassment', label: 'Harassment' },
-    { code: 'hate_speech', label: 'Hate Speech' },
-    { code: 'inappropriate', label: 'Inappropriate Content' },
-    { code: 'other', label: 'Other' },
+    { code: 'spam', label: isHydrated ? t.reportSpam : 'Spam/Scam' },
+    { code: 'harassment', label: isHydrated ? t.reportHarassment : 'Harassment' },
+    { code: 'hate_speech', label: isHydrated ? t.reportHate : 'Hate Speech' },
+    { code: 'inappropriate', label: isHydrated ? t.reportInappropriate : 'Inappropriate Content' },
+    { code: 'other', label: isHydrated ? t.reportOther : 'Other' },
   ] as const;
 
   const [isReportOpen, setIsReportOpen] = useState(false);
@@ -145,7 +151,7 @@ export default function ChatPage() {
 
     try {
       await api.post('/report', payload);
-      addToast('Report submitted. Thank you for making Raelo safer.', 'success');
+      addToast(isHydrated ? t.toastReportSuccess : 'Report submitted.', 'success');
       handleLeave();
     } catch (err) {
       setReportError('Failed to submit report. Please try again.');
@@ -157,7 +163,7 @@ export default function ChatPage() {
 
   if (!roomID) return null;
 
-  const strangerLabel = 'Stranger';
+  const strangerLabel = isHydrated ? t.stranger : 'Stranger';
 
   return (
     <>
@@ -200,12 +206,13 @@ export default function ChatPage() {
                 className="text-[11px] font-bold uppercase tracking-wider"
                 style={{ color: isConnected ? '#6451D8' : '#D96060' }}
               >
-                {isConnected ? '● Online' : '○ Offline'}
+                {isConnected ? (isHydrated ? t.online : '● Online') : (isHydrated ? t.offline : '○ Offline')}
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
+            {isHydrated && <LanguagePicker />}
             <Button
               variant="ghost"
               onClick={handleOpenReport}
@@ -213,12 +220,12 @@ export default function ChatPage() {
               className="text-xs px-4 py-2 gap-1.5"
             >
               <Flag className="w-3.5 h-3.5" />
-              Report
+              {isHydrated ? t.reportBtn : 'Report'}
             </Button>
 
             <Button variant="danger" onClick={handleLeave} className="text-xs px-4 py-2 gap-1.5">
               <LogOut className="w-3.5 h-3.5" />
-              Exit
+              {isHydrated ? t.exitBtn : 'Exit'}
             </Button>
           </div>
         </header>
@@ -323,9 +330,9 @@ export default function ChatPage() {
                   boxShadow: '0 2px 8px rgba(240,128,128,0.15)',
                 }}
               >
-                Stranger has left the chat 👋
+                {isHydrated ? t.strangerLeft : 'Stranger has left the chat 👋'}
                 <br />
-                <span style={{ opacity: 0.7 }}>Click Exit to find someone new!</span>
+                <span style={{ opacity: 0.7 }}>{isHydrated ? t.strangerLeftSub : 'Click Exit to find someone new!'}</span>
               </div>
             </div>
           )}
@@ -352,10 +359,10 @@ export default function ChatPage() {
               disabled={!isConnected || strangerDisconnected}
               placeholder={
                 strangerDisconnected
-                  ? 'Chat ended…'
+                  ? (isHydrated ? t.chatEnded : 'Chat ended…')
                   : !isConnected
-                    ? 'Connecting…'
-                    : 'Type a message…'
+                    ? (isHydrated ? t.connecting : 'Connecting…')
+                    : (isHydrated ? t.typeMessage : 'Type a message…')
               }
               className="flex-1 px-5 py-3 text-base font-semibold outline-none transition-all duration-200"
               style={{
@@ -402,10 +409,10 @@ export default function ChatPage() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <div className="text-base font-black" style={{ color: '#1E1C2E' }}>
-                  Report chat
+                  {isHydrated ? t.reportTitle : 'Report chat'}
                 </div>
                 <div className="text-[11px] font-bold uppercase tracking-wider" style={{ color: '#7C6EF0' }}>
-                  Select a reason
+                  {isHydrated ? t.reportSelectLabel : 'Select a reason'}
                 </div>
               </div>
 
@@ -449,8 +456,8 @@ export default function ChatPage() {
               {selectedReason === 'other' && (
                 <div className="pt-1">
                   <Input
-                    label="Other reason"
-                    placeholder="Describe the issue in English"
+                    label={isHydrated ? t.reportOther : "Other reason"}
+                    placeholder={isHydrated ? t.reportOtherPlaceholder : "Describe the issue in English"}
                     value={otherReason}
                     onChange={(e) => setOtherReason(e.target.value)}
                     disabled={isSubmittingReport}
@@ -472,7 +479,7 @@ export default function ChatPage() {
                 disabled={isSubmittingReport}
                 className="flex-1"
               >
-                Cancel
+                {isHydrated ? t.reportCancel : "Cancel"}
               </Button>
               <Button
                 variant="danger"
@@ -481,7 +488,7 @@ export default function ChatPage() {
                 disabled={isSubmittingReport}
                 className="flex-1"
               >
-                Confirm report
+                {isHydrated ? t.reportConfirm : "Confirm report"}
               </Button>
             </div>
           </div>
